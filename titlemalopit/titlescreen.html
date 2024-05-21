@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaos Domain</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&family=Love+Ya+Like+A+Sister&family=Micro+5&family=Noto+Sans+Symbols+2&family=Oswald:wght@200..700&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Lobster Two', cursive; /* Applying Lobster Two font */
+        }
+
+        .chaos-domain {
+            width: 100%;
+            height: 100vh;
+            background: url('bg.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            overflow: hidden; /* Hide overflow to prevent scrollbar */
+            animation: moveBackground 30s linear infinite; /* Animation to move background */
+        }
+
+		.sword {
+			width: 500px;
+			height: 500px;
+			background-size: contain;
+			background: url('sword.gif') no-repeat center center;
+			position: relative;
+            overflow: hidden; 
+			top: 40%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			
+		}
+
+
+        @keyframes moveBackground {
+            from {
+                background-position: 0 0; /* Start position */
+            }
+            to {
+                background-position: 100% 100%; /* End position */
+            }
+        }
+
+        .title {
+            font-size: 3em;
+            color: #fff;
+            text-align: center;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10; /* Ensure title is above overlay */
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 100px;
+        }
+
+        .subtitle {
+            font-size: 2em;
+            color: #fff;
+            text-align: center;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10; /* Ensure title is above overlay */
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 30px;
+        }
+
+
+        .button-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10; /* Ensure buttons are above overlay */
+        }
+
+        .button {
+            width: 90px;
+            height: 15px; /* Adjusted height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.6s ease, transform 0.9s ease, box-shadow 0.6s ease;
+            background-color: #8b0000;
+            border: 1px;
+            font-size: 15px;
+            color: #000000;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 5px 5px 4px #8b0000;
+            margin-bottom: 20px;
+            font-family: "Pixelify Sans", sans-serif;
+        }
+
+        .button:hover {
+            background-color: #6b0505;
+            transform: scale(1.0);
+            box-shadow: 3px 8px 8px 6px #8b0000;
+            transform: rotate(360deg);
+        }
+
+        .button.clicked {
+            height: 3px;
+            width: 3px;
+            font-size: 25px;
+            transform: rotate(360deg);
+            box-shadow: 0 5px 10px 4px #8b0000;
+        }
+
+        .button.lastClicked {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Overlay style */
+        .overlay-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0; /* Initially height is 0 */
+            background-color: rgba(1, 1, 1, 1); /* Semi-transparent black */
+            z-index: 5; /* Place it below buttons */
+            transition: height 0.5s ease; /* Transition height change */
+        }
+
+        .overlay-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0; /* Initially height is 0 */
+            background-color: rgba(1, 1, 1, 1); /* Semi-transparent black */
+            z-index: 5; /* Place it below buttons */
+            transition: height 0.5s ease; /* Transition height change */
+        }
+
+        .overlay-active {
+            height: 50%; /* When active, height is 50% of viewport */
+        }
+
+		.bg2 {
+			background: url('bg2.jpg') no-repeat center center;
+			background-size: cover;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+		#mainDialog {
+		    display: none; /* Initially hide */
+		    position: absolute;
+		    bottom: 10%;
+		    left: 50%;
+		    transform: translateX(-50%);
+		    background-clip: padding-box;
+		    background-color: var(--dialogBoxColor, dodgerblue);
+		    border-width: 8px;
+		    border-style: solid;
+		    border-image: url("border.gif");
+		    border-image-repeat: repeat;
+		    border-image-slice: 10;
+		    border-image-width: 16px;
+		    color: var(--fontColor, white);
+		    font-family: "Pixelify Sans", sans-serif;
+		    font-size: 20px;
+		    image-rendering: crisp-edges;
+		    padding: 8px;
+		    text-shadow: 2px 2px 1px black;
+		    overflow: hidden;
+		    cursor: pointer;
+		    height: 120px; 
+		    width: 700px;
+		    word-wrap: break-word; 
+		    display: none;
+		    align-items: flex-start; 
+		    justify-content: flex-start;
+		    flex-direction: column; 
+		}
+		.bg3 {
+			background: url('bg3.jpg') no-repeat center center;
+			background-size: cover;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+				.bg4 {
+			background: url('bg4.jpg') no-repeat center center;
+			background-size: cover;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+			.bg5 {
+			background: url('bg5.jpg') no-repeat center center;
+			background-size: cover;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+    </style>
+</head>
+<body>
+    <div class="chaos-domain">
+        <h1 class="title">Chaos Domain</h1>
+        <h3 class="subtitle">Battle for the Omega</h3>
+        <div class="sword"></div>
+        <div class="button-container">
+            <div class="button" onclick="startNewGame()">New Game</div>
+            <div class="button" onclick="openSettings()">Settings</div>
+            <div class="button" onclick="exitGame()">Exit</div>
+        </div>
+        <div class="overlay-top"></div> <!-- Top overlay -->
+        <div class="overlay-bottom"></div> <!-- Bottom overlay -->
+        <div class="dialog-box" id="mainDialog">
+            <p id="dialogText"></p>
+        </div> <!-- Dialog box -->
+
+    </div>
+
+    <script>
+function startNewGame() {
+    toggleOverlay(); // Trigger overlay
+    setTimeout(() => {
+        toggleOverlay(); // Toggle overlay again after a delay
+        document.querySelector(".chaos-domain").classList.add("bg2"); // Change background
+        document.getElementById("mainDialog").style.display = "block"; // Show dialog box
+        const dialogText = "The Chaos Domain was once crowned as the place of beginnings, a place named after the supreme element of Chaos, even superior to the Time and Space Domains. From mortals to immortals, everyone lived harmoniously, adhering to the commands of the Supreme Order of Chaos...";
+        typeWriter(dialogText);
+    }, 1000);
+
+    console.log("Starting new game...");
+    document.querySelector(".title").style.display = "none"; // Hide title
+    document.querySelector(".subtitle").style.display = "none"; // Hide subtitle
+    document.querySelector(".sword").style.display = "none"; // Hide sword
+    document.querySelector(".button-container").style.display = "none"; // Hide button container
+}
+
+function openSettings() {
+    console.log("Opening settings...");
+    toggleOverlay();
+}
+
+function exitGame() {
+    console.log("Exiting game...");
+    toggleOverlay();
+}
+
+function toggleOverlay() {
+    var overlayTop = document.querySelector(".overlay-top");
+    var overlayBottom = document.querySelector(".overlay-bottom");
+    overlayTop.classList.toggle("overlay-active");
+    overlayBottom.classList.toggle("overlay-active");
+}
+
+document.getElementById("mainDialog").addEventListener("click", function() {
+    toggleOverlay(); // Toggle overlay when dialogue box is clicked
+    setTimeout(() => {
+        toggleOverlay(); // Toggle overlay again after a delay
+        if (!document.querySelector(".chaos-domain").classList.contains("bg3")) {
+            // If bg3 transition hasn't happened yet
+            document.querySelector(".chaos-domain").classList.add("bg3"); // Change background to bg3.jpg
+            document.getElementById("mainDialog").textContent = ""; // Clear previous dialogue text
+            setTimeout(() => {
+                const dialogText = "Every race prospered in the reign of the Supreme Emperor of Chaos, the head of the Supreme Order and the wielder of the Divine Sword Omega. But a disaster struck that began the agony of the myriad races...";
+                typeWriter(dialogText); // Apply typewriter animation for the main dialogue text
+            }, 500); // Adjust timing to ensure previous actions are completed
+        } else if (!document.querySelector(".chaos-domain").classList.contains("bg4")) {
+            // If bg4 transition hasn't happened yet
+            document.querySelector(".chaos-domain").classList.remove("bg3"); // Remove bg3 class
+            document.querySelector(".chaos-domain").classList.add("bg4"); // Change background to bg4.jpg
+            document.getElementById("mainDialog").textContent = ""; // Clear previous dialogue text
+            setTimeout(() => {
+                const dialogText = "Welcome to Chaos Domain"; // Text for bg4
+                typeWriter(dialogText); // Apply typewriter animation for the main dialogue text
+            }, 500); // Adjust timing to ensure previous actions are completed
+        } else {
+            // If bg4 transition has already happened, proceed to bg5
+            document.querySelector(".chaos-domain").classList.remove("bg4"); // Remove bg4 class
+            document.querySelector(".chaos-domain").classList.add("bg5"); // Change background to bg5.jpg
+            document.getElementById("mainDialog").textContent = ""; // Clear previous dialogue text
+            setTimeout(() => {
+                const dialogText = "The fifth background text..."; // Text for bg5
+                typeWriter(dialogText); // Apply typewriter animation for the main dialogue text
+            }, 500); // Adjust timing to ensure previous actions are completed
+        }
+    }, 2000);
+});
+
+function typeWriter(text) {
+    const dialogElement = document.getElementById("mainDialog");
+    let charIndex = 0;
+    const typing = setInterval(() => {
+        if (charIndex === text.length) {
+            clearInterval(typing);
+        } else {
+            dialogElement.textContent += text.charAt(charIndex);
+            charIndex++;
+        }
+    }, 30);
+}
+
+
+
+
+
+    </script>
+</body>
+</html>
+	
