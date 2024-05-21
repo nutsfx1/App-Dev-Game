@@ -394,6 +394,9 @@ class MazeBuilder {
     var overlayBottom = document.querySelector(".overlay-bottom");
     overlayTop.classList.toggle("overlay-active");
     overlayBottom.classList.toggle("overlay-active");
+
+    console.log("Overlay toggled. Top active:", overlayTop.classList.contains("overlay-active"), 
+              "Bottom active:", overlayBottom.classList.contains("overlay-active"));
 }
 
 
@@ -687,22 +690,6 @@ class MazeBuilder {
   var aliveHeroes, noOfEnemies, heroParty, enemy1, enemy2, enemy3, enemy4, enemy5, turnOrder = [],
   buttonsDiv, button1, button2, button3, button4, button5;
 
-  function showBattleElements() {
-    document.getElementById("battle-area").style.display = "block";
-    document.getElementById("heroHealthBars").style.display = "block";
-    document.getElementById("turnOrderDisp").style.display = "block";
-    document.getElementById("btnDiv").style.display = "block";
-    document.getElementById("enemyHealthBars").style.display = "block";
-    document.getElementById("enemy1").style.display = "block";
-    document.getElementById("enemy2").style.display = "block";
-    document.getElementById("enemy3").style.display = "block";
-    document.getElementById("enemy4").style.display = "block";
-    document.getElementById("enemy5").style.display = "block";
-    document.getElementById("hero1").style.display = "block";
-    document.getElementById("hero2").style.display = "block";
-    document.getElementById("hero3").style.display = "block";
-  }
-
   function initalizeBattle(){
     turnOrder = [];
     disableDisplay();
@@ -717,6 +704,10 @@ class MazeBuilder {
     heroGIF();
     disableKeyboard();
     showBattleElements();
+  }
+
+  function showBattleElements() {
+    document.getElementById('wholeBattle').style.display = 'block';
   }
 
   function disableKeyboard() {
@@ -1094,7 +1085,7 @@ function updateHealthBars() {
           deathGif.style.display = 'none';
           backgroundOverlay.style.display = 'none';
         }, 1000); // Adjust the time as needed
-      }, 100); // Adjust the time as needed
+      }, 2000); // Adjust the time as needed
 
       // Set the hero as dead
       hero.isDead = true;
@@ -1231,20 +1222,7 @@ function checkVictory() {
 
   // Function to hide all elements related to the battle system
   function hideBattleElements() {
-  document.getElementById("battle-area").style.display = "none";
-  document.getElementById("heroHealthBars").style.display = "none";
-  document.getElementById("turnOrderDisp").style.display = "none";
-  document.getElementById("btnDiv").style.display = "none";
-  document.getElementById("enemyHealthBars").style.display = "none";
-  document.getElementById("enemy1").style.display = "none";
-  document.getElementById("enemy2").style.display = "none";
-  document.getElementById("enemy3").style.display = "none";
-  document.getElementById("enemy4").style.display = "none";
-  document.getElementById("enemy5").style.display = "none";
-  document.getElementById("hero1").style.display = "none";
-  document.getElementById("hero2").style.display = "none";
-  document.getElementById("hero3").style.display = "none";
-  document.getElementById("background-overlay").style.display = "none";
+  document.getElementById('wholeBattle').style.display = 'none';
 }
 
   function displayLostLifeMessage() {
@@ -1273,21 +1251,40 @@ function checkVictory() {
   }, 4000); // Display the message for 4 seconds
 }
 
-  if (heroParty.hero.Fainted && heroParty.mage.Fainted && heroParty.priest.Fainted)
-     {
-    // Display the lost life message
+function handleDefeat() {
+  // Remove buttons
+  let btnToRemove = ["btn1", "btn2", "btn3"];
+  btnToRemove.forEach(function(btnId) {
+    let btnRemove = document.getElementById(btnId);
+    if (btnRemove) {
+      buttonsDiv.removeChild(btnRemove);
+    }
+  });
+
+  // Toggle overlay after a delay
+  setTimeout(function() {
+    toggleOverlay();
+
+    // Display lost life message
+    setTimeout(function() {
       displayLostLifeMessage();
-      hideBattleElements();
-      enableKeyboard();
-      for (let a in btnToRemove)
-        {
-          let btnRemove = document.getElementById(btnToRemove[a]);
-          if(btnRemove)
-          {
-            buttonsDiv.removeChild(btnRemove);
-          }
-        };
-}else if (enemy1.HP <= 0 && enemy2.HP <= 0 && enemy3.HP <= 0) {
+
+      // Hide battle elements and toggle overlay after showing the message
+      setTimeout(function() {
+        hideBattleElements();
+        toggleOverlay();
+      }, 2500); // Display the message for 2.5 seconds
+    }, 500); // Delay slightly to ensure overlay is shown before displaying message
+  }, 2000); // Adjust this delay as needed
+
+  // Enable keyboard after all actions
+  setTimeout(enableKeyboard, 4500); // Slightly after all actions to ensure consistency
+}
+
+if (heroParty.hero.Fainted && heroParty.mage.Fainted && heroParty.priest.Fainted) {
+  handleDefeat();
+}
+else if (enemy1.HP <= 0 && enemy2.HP <= 0 && enemy3.HP <= 0) {
     //checks if enemy 1, 2, 3 are dead
     if (noOfEnemies > 3) {
       //checks if theres 4 or 5 enemies
