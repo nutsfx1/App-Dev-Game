@@ -394,9 +394,6 @@ class MazeBuilder {
     var overlayBottom = document.querySelector(".overlay-bottom");
     overlayTop.classList.toggle("overlay-active");
     overlayBottom.classList.toggle("overlay-active");
-
-    console.log("Overlay toggled. Top active:", overlayTop.classList.contains("overlay-active"), 
-              "Bottom active:", overlayBottom.classList.contains("overlay-active"));
 }
 
 
@@ -559,12 +556,12 @@ class MazeBuilder {
       name: "Priest",
       class: "priest-class",
       LVL: 1,
-      HP: 8,
-      ATK: 6,
-      CR: 0.10,
-      DEF: 6,
+      HP: 9,
+      ATK: 7,
+      CR: 0.23,
+      DEF: 10,
       MDEF: 10,
-      SPD: 11,
+      SPD: 20,
       isHero: true,
       DamageDone: 0,
       DamageTaken: 0,
@@ -578,89 +575,77 @@ class MazeBuilder {
   };
 
   //skeleton slime goblino orc kitsune werewolf usoppTengu birdTengu
+    //skeleton slime goblino orc kitsune werewolf usoppTengu birdTengu
   let enemies = { 
     slime:{
       //Very Weak
       name: "Slime",
-      class: "slime-class",
       HP: 4,
       ATK: 4,
       CR: 0.05,
       DEF: 4,
       MDEF: 4,
       SPD: 4,
-      isEnemy: true,
-      type: "slime"
+      isEnemy: true
     },
     skeleton:{
       //medium-ish difficulty
       name: "Skeleton",
-      class: "skeleton-class",
       HP: 7,
       ATK: 6,
       CR: 0.10,
       DEF: 7,
       MDEF: 10,
       SPD: 10,
-      isEnemy: true,
-      type: "skeleton"
+      isEnemy: true
     },
     goblin:{ 
       //a bit weaker than skeleton
       name: "Goblin",
-      class: "goblin-class",
       HP: 6,
       ATK: 5,
       CR: 0.13,
       DEF: 7,
       MDEF: 2,
       SPD: 13,
-      isEnemy: true,
-      type: "goblin"
+      isEnemy: true
     },
     orc:{
       //High Difficulty, Weakness is magic
       name: "Orc",
-      class: "orc-class",
       HP: 10,
-      ATK: 13,
+      ATK: 8,
       CR: 0.15,
       DEF: 12,
       MDEF: 2,
       SPD: 3,
-      isEnemy: true,
-      type: "orc"
+      isEnemy: true
     },
     kitsune:{
       //Glass Cannon (high damage low health), Weakness is Physical Atk
       name: "Kitsune",
-      class: "kitsune-class",
       HP: 5,
       ATK: 12,
       DEF: 4,
       MDEF: 12,
       SPD: 16,
       isEnemy: true,
-      isMagic: true,
-      type: "kitsune"
+      isMagic: true
     },
     werewolf:{
       //relatively balanced
       name: "Werewolf",
-      class: "werewolf-class",
       HP: 7,
       ATK: 8,
       CR: 0.20,
       DEF: 7,
       MDEF: 10,
       SPD: 20,
-      isEnemy: true,
-      type: "werewolf"
+      isEnemy: true
     },
     mountainTengu:{
       //similar to sky tengu but slower and higher health pool
       name: "Mountain Tengu",
-      class: "mountainTengu-class",
       HP: 8,
       ATK: 12,
       CR: 0.20,
@@ -668,30 +653,109 @@ class MazeBuilder {
       MDEF: 10,
       SPD: 6,
       isEnemy: true,
-      isMagic: true,
-      type: "mountainTengu"
+      isMagic: true
     },
     skyTengu:{
       //Faster but more brittle Tengu
       name: "Sky Tengu",
-      class: "skyTengu-class",
       HP: 5,
       ATK: 11,
       CR: 0.23,
       DEF: 7,
       MDEF: 10,
       SPD: 18,
-      isEnemy: true,
-      type: "skyTengu"
+      isEnemy: true
     }
   };
 
-  //variable declarations
-  var aliveHeroes, noOfEnemies, heroParty, enemy1, enemy2, enemy3, enemy4, enemy5, turnOrder = [],
-  buttonsDiv, button1, button2, button3, button4, button5;
 
-  function initalizeBattle(){
-    turnOrder = [];
+
+  //added object for boss Oeneri
+  let boss = {
+      Phase1:{//phase 1, Human form
+        name: "Oeneri",
+        LVL: 10,
+        HP: 40,
+        ATK: 20,
+        CR: 0.10,
+        DEF: 25,
+        MDEF: 15,
+        SPD: 999,
+        isBoss: true,
+        DamageDone: 0,
+        DamageTaken: 0,
+        isMagic: true,
+        isEnemy: true
+      },
+      Phase2:{
+        Body:{ //phase 2, Moonlord form Body
+          name: "Overlord of the Chaos Domain, Oeneri",
+          LVL: 10,
+          HP: 40,
+          ATK: 20,
+          CR: 0.10,
+          DEF: 25,
+          MDEF: 15,
+          SPD: 999,
+          isBoss: true,
+          DamageDone: 0,
+          DamageTaken: 0,
+          isMagic: true,
+          isEnemy: true
+        },
+        Arms:{ //Arms of Moonlord
+          name: "Arm of the Overlord",
+          LVL: 10,
+          HP: 40,
+          ATK: 20,
+          CR: 0.10,
+          DEF: 25,
+          MDEF: 15,
+          SPD: 999,
+          isBoss: true,
+          DamageDone: 0,
+          DamageTaken: 0,
+          isEnemy: true
+        }
+      },
+      Phase3:{  //Phase 3, Brain of Cthulu
+        name: "Mind of Oeneri",
+          LVL: 10,
+          HP: 40,
+          ATK: 20,
+          CR: 0.10,
+          DEF: 25,
+          MDEF: 15,
+          SPD: 999,
+          isBoss: true,
+          DamageDone: 0,
+          DamageTaken: 0,
+          isMagic: true,
+          isEnemy: true
+      }
+    };
+  //variable declarations
+  var aliveHeroes, noOfEnemies, heroParty, enemy1, enemy2, enemy3, enemy4, turnOrder = [],
+  buttonsDiv, button1, button2, button3, button4, button5, heroesInParty, bossPhase = 0;
+
+  function showBattleElements() {
+    document.getElementById("battle-area").style.display = "block";
+    document.getElementById("heroHealthBars").style.display = "block";
+    document.getElementById("turnOrderDisp").style.display = "block";
+    document.getElementById("btnDiv").style.display = "block";
+    document.getElementById("enemyHealthBars").style.display = "block";
+    document.getElementById("enemy1").style.display = "block";
+    document.getElementById("enemy2").style.display = "block";
+    document.getElementById("enemy3").style.display = "block";
+    document.getElementById("enemy4").style.display = "block";
+    document.getElementById("enemy5").style.display = "block";
+    document.getElementById("hero1").style.display = "block";
+    document.getElementById("hero2").style.display = "block";
+    document.getElementById("hero3").style.display = "block";
+  }
+
+   function initalizeBattle(){
+    turnOrder = []; //reset turn order
     disableDisplay();
     enemyNoDeclaration();
     setTurnOrder();
@@ -701,15 +765,46 @@ class MazeBuilder {
     updateTurnOrderDisp();
     enemyTurnCheck();
     hideVictory();
-    heroGIF();
-    disableKeyboard();
-    showBattleElements();
   }
 
-  function showBattleElements() {
-    document.getElementById('wholeBattle').style.display = 'block';
-  }
 
+  //seperate function for Boss Battle
+  function bossBattle(){
+    disableDisplay();
+    bossPhase++;
+    turnOrder = []; //reset turn order
+    heroParty = structuredClone(Party);
+    heroesInParty = [heroParty.hero, heroParty.mage, heroParty.priest]; //note that this will not be here in the final version
+    //the array above will only be used when a companion has been met
+    //if the companion has been successfully recruited, just use heroesInParty.push(heroParty./*insert heroname*/);
+    //turn the Party./*heronamehere*/.fainted = false       Note that its Party and NOT heroParty
+    //we can add this when Jomari's part (hero recruit lines) is finished and we can include the heroes now
+
+
+    aliveHeroes = heroesInParty;
+
+    if (heroesInParty.includes(heroParty.thief))
+    {
+      document.getElementById('thief').style.display = "block";
+    }
+    if (heroesInParty.includes(heroParty.mage))
+    {
+      document.getElementById('mage').style.display = "block";
+    }
+    if (heroesInParty.includes(heroParty.priest))
+    {
+      document.getElementById('priest').style.display = "block";
+    }
+  
+    bossSequenceDelcare();
+    setTurnOrder();
+    setEnemyNames();
+    createAtkEnemyBtn();
+    HealthDisplay();
+    updateTurnOrderDisp();
+    enemyTurnCheck();
+    hideVictory();
+  }
   function disableKeyboard() {
     window.addEventListener('keydown', preventDefaultForKeyboard, true);
     window.addEventListener('keyup', preventDefaultForKeyboard, true);
@@ -756,53 +851,92 @@ function enemyAssign(objNum){
   }
 }
 
-function disableDisplay(){
-  //sets the enemy 4 and 5 disabled before rolling for the number of enemies
-  document.getElementById('enemy4').style.display = "none";
-  document.getElementById('enemy5').style.display = "none";
-}
+  function disableDisplay(){
+    //sets the enemy 4 and 5 disabled before rolling for the number of enemies
+    document.getElementById('enemy2').style.display = "none";
+    document.getElementById('enemy3').style.display = "none";
+    document.getElementById('enemy4').style.display = "none";//hides the values so that when is not in party, wont show the div
+    document.getElementById('mage').style.display = "none";
+    document.getElementById('priest').style.display = "none";
+  }
 
-function enemyNoDeclaration(){
-  //roll for how many enemies in the battle (Min of 3, max of 5)
-  heroParty = structuredClone(Party);
-  aliveHeroes = [heroParty.hero, heroParty.mage, heroParty.priest];
-  noOfEnemies = Math.ceil(Math.random() * 3);
-
-  console.log("Number of enemies : " + noOfEnemies);
-  enemy1, enemy2, enemy3, enemy4, enemy5;
-  enemy1 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
-  enemy2 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
-  enemy3 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
-  if (noOfEnemies > 3)
-  {
-    enemy4 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
-    if (noOfEnemies > 4)
+  function bossSequenceDelcare(){ //declares enemy using Oeneri object
+    if (bossPhase == 1)
     {
-      enemy5 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
+      enemy1 = structuredClone(boss.Phase1);
+      noOfEnemies = 1;
+    }
+    else if (bossPhase == 2)
+    {
+      enemy1 = structuredClone(boss.Phase2.Arms);
+      enemy1.name = "Left " + enemy1.name;
+      enemy2 = structuredClone(boss.Phase2.Body);
+      enemy3 = structuredClone(boss.Phase2.Arms);
+      enemy3.name = "Right " + enemy3.name;
+      noOfEnemies = 3;
+    }
+    else if (bossPhase == 3)
+    {
+      enemy1 = structuredClone(boss.Phase3);
+      noOfEnemies = 1;
     }
   }
-}
 
-function setTurnOrder(){
-  //turn order
-  //pushes the objects to the turn order array
-  turnOrder.push(heroParty.hero); 
-  turnOrder.push(heroParty.mage);
-  turnOrder.push(heroParty.priest);
-  turnOrder.push(enemy1);
-  turnOrder.push(enemy2);
-  turnOrder.push(enemy3);
-  if (noOfEnemies > 3)
-  {
-    turnOrder.push(enemy4);
-    if (noOfEnemies > 4)
+  function enemyNoDeclaration(){
+    heroParty = structuredClone(Party);
+    heroesInParty = [heroParty.hero, heroParty.thief, heroParty.mage, heroParty.priest];
+    aliveHeroes = heroesInParty;
+
+    if (heroesInParty.includes(heroParty.thief))
     {
-      turnOrder.push(enemy5);
+      document.getElementById('thief').style.display = "block";
+    }
+    if (heroesInParty.includes(heroParty.mage))
+    {
+      document.getElementById('mage').style.display = "block";
+    }
+    if (heroesInParty.includes(heroParty.priest))
+    {
+      document.getElementById('priest').style.display = "block";
+    }
+
+    noOfEnemies = aliveHeroes.length;//enemies will now always match hero number ----- due to difficulty :)
+    console.log("Number of enemies : " + noOfEnemies);
+    enemy1 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
+    if (noOfEnemies > 1)
+    {    
+      enemy2 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
+      if (noOfEnemies > 2)
+      {    
+        enemy3 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
+        if (noOfEnemies > 3)
+        {
+          enemy4 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
+        }
+      }
     }
   }
-  //sorts them according to their speed stat from Greatest to Least
-  turnOrder.sort((a, b) => b.SPD - a.SPD); 
-}
+
+  function setTurnOrder(){
+    //turn order
+    //pushes the objects to the turn order array
+    turnOrder.push(...heroesInParty);
+    turnOrder.push(enemy1);
+    if (noOfEnemies > 1)
+    {
+      turnOrder.push(enemy2);
+      if (noOfEnemies > 2)
+      {
+        turnOrder.push(enemy3);
+        if (noOfEnemies > 3)
+        {
+          turnOrder.push(enemy4);
+        }
+      }
+    }
+    //sorts them according to their speed stat from Greatest to Least
+    turnOrder.sort((a, b) => b.SPD - a.SPD); 
+  }
 
 //Getting the enemy GIF's
 //This is for the path
@@ -821,110 +955,113 @@ function setEnemyNames() {
   enemy1Gif.style.display = 'block';
   enemy1Gif.src = getGifPath(enemy1.type);
   enemy1Gif.className = getClass(enemy1.type);
-  
-  document.getElementById('enemy2Name').innerText = enemy2.name;
-  const enemy2Gif = document.getElementById('enemy2Gif');
-  enemy2Gif.style.display = 'block';
-  enemy2Gif.src = getGifPath(enemy2.type);
-  enemy2Gif.className = getClass(enemy2.type);
-
-  document.getElementById('enemy3Name').innerText = enemy3.name;
-  const enemy3Gif = document.getElementById('enemy3Gif');
-  enemy3Gif.style.display = 'block';
-  enemy3Gif.src = getGifPath(enemy3.type);
-  enemy3Gif.className = getClass(enemy3.type);
-
-  if (noOfEnemies > 3) {
-    document.getElementById('enemy4').style.display = 'block';
-    document.getElementById('enemy4Name').innerText = enemy4.name;
-    const enemy4Gif = document.getElementById('enemy4Gif');
-    enemy4Gif.style.display = 'block';
-    enemy4Gif.src = getGifPath(enemy4.type);
-    enemy4Gif.className = getClass(enemy4.type);
-    if (noOfEnemies > 4) {
-      document.getElementById('enemy5').style.display = 'block';
-      document.getElementById('enemy5Name').innerText = enemy5.name;
-      const enemy5Gif = document.getElementById('enemy5Gif');
-      enemy5Gif.style.display = 'block';
-      enemy5Gif.src = getGifPath(enemy5.type);
-      enemy5Gif.className = getClass(enemy5.type);
-    }
-  }
+	if (noOfEnemies > 1)
+	{
+		document.getElementById('enemy2Name').innerText = enemy2.name;
+		const enemy2Gif = document.getElementById('enemy2Gif');
+		enemy2Gif.style.display = 'block';
+		enemy2Gif.src = getGifPath(enemy2.type);
+		enemy2Gif.className = getClass(enemy2.type);
+		if (noOfEnemies > 2)
+		{
+			document.getElementById('enemy3Name').innerText = enemy3.name;
+			const enemy3Gif = document.getElementById('enemy3Gif');
+			enemy3Gif.style.display = 'block';
+			enemy3Gif.src = getGifPath(enemy3.type);
+			enemy3Gif.className = getClass(enemy3.type);
+			if (noOfEnemies > 3)
+			{
+			    document.getElementById('enemy4').style.display = 'block';
+			    document.getElementById('enemy4Name').innerText = enemy4.name;
+			    const enemy4Gif = document.getElementById('enemy4Gif');
+			    enemy4Gif.style.display = 'block';
+			    enemy4Gif.src = getGifPath(enemy4.type);
+			    enemy4Gif.className = getClass(enemy4.type);
+			}
+	      }
+	}
 }
 
 
 
 function createAtkEnemyBtn(){
-  //create attack buttons based on enemy
-  buttonsDiv = document.getElementById('btnDiv');
-  button1, button2, button3, button4, button5;
-  button1 = document.createElement("button");
-  button1.id = "btn1";
-  button1.innerHTML = "Attack " + enemy1.name;
-  button1.addEventListener("click", atkEnemy1);
-  buttonsDiv.appendChild(button1);
+    //create attack buttons based on enemy
+    buttonsDiv = document.getElementById('btnDiv');
+    button1, button2, button3, button4, button5;
+    button1 = document.createElement("button");
+    button1.id = "btn1";
+    button1.innerHTML = "Attack " + enemy1.name;
+    button1.addEventListener("click", atkEnemy1);
+    buttonsDiv.appendChild(button1);
 
-  button2 = document.createElement("button");
-  button2.id = "btn2";
-  button2.innerHTML = "Attack " + enemy2.name;
-  button2.addEventListener("click", atkEnemy2);
-  buttonsDiv.appendChild(button2);
-
-  button3 = document.createElement("button");
-  button3.id = "btn3";
-  button3.innerHTML = "Attack " + enemy3.name;
-  button3.addEventListener("click", atkEnemy3);
-  buttonsDiv.appendChild(button3);
-
-  if (noOfEnemies > 3)
-  {
-    button4 = document.createElement("button");
-    button4.id = "btn4";
-    button4.innerHTML = "Attack " + enemy4.name;
-    button4.addEventListener("click", atkEnemy4);
-    buttonsDiv.appendChild(button4);
-    if(noOfEnemies > 4)
+    if (noOfEnemies > 1)
     {
-      button5 = document.createElement("button");
-      button5.id = "btn5";
-      button5.innerHTML = "Attack " + enemy5.name;
-      button5.addEventListener("click", atkEnemy5);
-      buttonsDiv.appendChild(button5);
+      button2 = document.createElement("button");
+      button2.id = "btn2";
+      button2.innerHTML = "Attack " + enemy2.name;
+      button2.addEventListener("click", atkEnemy2);
+      buttonsDiv.appendChild(button2);
+      if (noOfEnemies > 2)
+      {
+        button3 = document.createElement("button");
+        button3.id = "btn3";
+        button3.innerHTML = "Attack " + enemy3.name;
+        button3.addEventListener("click", atkEnemy3);
+        buttonsDiv.appendChild(button3);
+        if (noOfEnemies > 3)
+        {
+          button4 = document.createElement("button");
+          button4.id = "btn4";
+          button4.innerHTML = "Attack " + enemy4.name;
+          button4.addEventListener("click", atkEnemy4);
+          buttonsDiv.appendChild(button4);
+        }
+      }
     }
   }
-}
 
 function HealthDisplay(){
-  //displaying the healthbars first
-  document.getElementById('heroHealthBars').style.display = 'block';
-  document.getElementById('enemyHealthBars').style.display = 'block';
-  //initializing healthbars
-  document.getElementById('hero-health-value').max = Party.hero.HP;
-  document.getElementById('mage-health-value').max = Party.mage.HP;
-  document.getElementById('priest-health-value').max = Party.priest.HP;
+    //initializing healthbars
+  
+    document.getElementById('hero-health-value').max = Party.hero.HP;
+    document.getElementById("hero-health-value").value = heroParty.hero.HP;
 
-  document.getElementById("hero-health-value").value = heroParty.hero.HP;
-  document.getElementById("mage-health-value").value = heroParty.mage.HP;
-  document.getElementById("priest-health-value").value = heroParty.priest.HP;
-
-  document.getElementById('enemy1-health-value').max = enemy1.HP;
-  document.getElementById('enemy2-health-value').max = enemy2.HP;
-  document.getElementById('enemy3-health-value').max = enemy3.HP;
-
-  document.getElementById('enemy1-health-value').value = enemy1.HP;
-  document.getElementById('enemy2-health-value').value = enemy2.HP;
-  document.getElementById('enemy3-health-value').value = enemy3.HP;
-  if (noOfEnemies > 3)
-  {
-    document.getElementById('enemy4-health-value').max = enemy4.HP;
-    document.getElementById('enemy4-health-value').value = enemy4.HP;
-    if (noOfEnemies > 4)
+    if (heroesInParty.includes(heroParty.thief))
     {
-      document.getElementById('enemy5-health-value').max = enemy5.HP;
-      document.getElementById('enemy5-health-value').value = enemy5.HP;
+      document.getElementById('thief-health-value').max = Party.thief.HP;
+      document.getElementById("thief-health-value").value = heroParty.thief.HP;
+    }
+
+    if (heroesInParty.includes(heroParty.mage))
+    {
+      document.getElementById('mage-health-value').max = Party.mage.HP;
+      document.getElementById("mage-health-value").value = heroParty.mage.HP;
+    }
+
+    if (heroesInParty.includes(heroParty.priest))
+    {
+      document.getElementById('priest-health-value').max = Party.priest.HP;
+      document.getElementById("priest-health-value").value = heroParty.priest.HP;
+    }
+
+    document.getElementById('enemy1-health-value').max = enemy1.HP;
+    document.getElementById('enemy1-health-value').value = enemy1.HP;
+    if (noOfEnemies > 1)
+    {
+      document.getElementById('enemy2-health-value').max = enemy2.HP;
+      document.getElementById('enemy2-health-value').value = enemy2.HP;
+      if(noOfEnemies > 2)
+      {
+        document.getElementById('enemy3-health-value').max = enemy3.HP;
+        document.getElementById('enemy3-health-value').value = enemy3.HP;
+        if (noOfEnemies > 3)
+        {
+          document.getElementById('enemy4-health-value').max = enemy4.HP;
+          document.getElementById('enemy4-health-value').value = enemy4.HP;
+        }
+      }
     }
   }
-}
 
 function heroGIF(){
   // Binding hero GIFs
@@ -1047,15 +1184,6 @@ function updateHealthBars() {
       showEnemyDeathAnimation(enemy4);
     }
     document.getElementById('enemy4-health-value').value = enemy4.HP;
-    if (noOfEnemies > 4) {
-      if (enemy5.HP <= 0) {
-        enemy5.HP = 0;
-        splcCheck(enemy5);
-        btnRemoval('btn5');
-        showEnemyDeathAnimation(enemy5);
-      }
-      document.getElementById('enemy5-health-value').value = enemy5.HP;
-    }
   }
 
   function showHeroDeathAnimation(hero, heroType) {
@@ -1085,7 +1213,7 @@ function updateHealthBars() {
           deathGif.style.display = 'none';
           backgroundOverlay.style.display = 'none';
         }, 1000); // Adjust the time as needed
-      }, 2000); // Adjust the time as needed
+      }, 100); // Adjust the time as needed
 
       // Set the hero as dead
       hero.isDead = true;
@@ -1122,19 +1250,25 @@ function updateHealthBars() {
 
 // Update damage counts
 function updateDamageCounts() 
-{
-  document.getElementById("hero-damage-value").textContent = heroParty.hero.DamageDone;
-  document.getElementById("hero-taken-damage-value").textContent = heroParty.hero.DamageTaken;
-  document.getElementById("hero-dodge-counter-value").textContent = heroParty.hero.DodgeCounter;
+  {
+    document.getElementById("hero-damage-value").textContent = heroParty.hero.DamageDone;
+    document.getElementById("hero-taken-damage-value").textContent = heroParty.hero.DamageTaken;
+    document.getElementById("hero-dodge-counter-value").textContent = heroParty.hero.DodgeCounter;
 
-  document.getElementById("mage-damage-value").textContent = heroParty.mage.DamageDone;
-  document.getElementById("mage-taken-damage-value").textContent = heroParty.mage.DamageTaken;
-  document.getElementById("mage-dodge-counter-value").textContent = heroParty.mage.DodgeCounter;
+    if (heroesInParty.includes(heroParty.mage))
+    {
+      document.getElementById("mage-damage-value").textContent = heroParty.mage.DamageDone;
+      document.getElementById("mage-taken-damage-value").textContent = heroParty.mage.DamageTaken;
+      document.getElementById("mage-dodge-counter-value").textContent = heroParty.mage.DodgeCounter;
+    }
 
-  document.getElementById("priest-damage-value").textContent = heroParty.priest.DamageDone;
-  document.getElementById("priest-taken-damage-value").textContent = heroParty.priest.DamageTaken;
-  document.getElementById("priest-dodge-counter-value").textContent = heroParty.priest.DodgeCounter;
-}
+    if (heroesInParty.includes(heroParty.priest))
+    {
+      document.getElementById("priest-damage-value").textContent = heroParty.priest.DamageDone;
+      document.getElementById("priest-taken-damage-value").textContent = heroParty.priest.DamageTaken;
+      document.getElementById("priest-dodge-counter-value").textContent = heroParty.priest.DodgeCounter;
+    }
+  }
 
 // Display dodge message
 function DispDodgeMessage(ID) 
@@ -1222,7 +1356,20 @@ function checkVictory() {
 
   // Function to hide all elements related to the battle system
   function hideBattleElements() {
-  document.getElementById('wholeBattle').style.display = 'none';
+  document.getElementById("battle-area").style.display = "none";
+  document.getElementById("heroHealthBars").style.display = "none";
+  document.getElementById("turnOrderDisp").style.display = "none";
+  document.getElementById("btnDiv").style.display = "none";
+  document.getElementById("enemyHealthBars").style.display = "none";
+  document.getElementById("enemy1").style.display = "none";
+  document.getElementById("enemy2").style.display = "none";
+  document.getElementById("enemy3").style.display = "none";
+  document.getElementById("enemy4").style.display = "none";
+  document.getElementById("enemy5").style.display = "none";
+  document.getElementById("hero1").style.display = "none";
+  document.getElementById("hero2").style.display = "none";
+  document.getElementById("hero3").style.display = "none";
+  document.getElementById("background-overlay").style.display = "none";
 }
 
   function displayLostLifeMessage() {
@@ -1251,142 +1398,194 @@ function checkVictory() {
   }, 4000); // Display the message for 4 seconds
 }
 
-function handleDefeat() {
-  // Remove buttons
-  let btnToRemove = ["btn1", "btn2", "btn3"];
-  btnToRemove.forEach(function(btnId) {
-    let btnRemove = document.getElementById(btnId);
-    if (btnRemove) {
-      buttonsDiv.removeChild(btnRemove);
-    }
-  });
-
-  // Toggle overlay after a delay
-  setTimeout(function() {
-    toggleOverlay();
-
-    // Display lost life message
-    setTimeout(function() {
-      displayLostLifeMessage();
-
-      // Hide battle elements and toggle overlay after showing the message
-      setTimeout(function() {
-        hideBattleElements();
-        toggleOverlay();
-      }, 2500); // Display the message for 2.5 seconds
-    }, 500); // Delay slightly to ensure overlay is shown before displaying message
-  }, 2000); // Adjust this delay as needed
-
-  // Enable keyboard after all actions
-  setTimeout(enableKeyboard, 4500); // Slightly after all actions to ensure consistency
+function battleLost() { //lost battle function
+	displayLostLifeMessage();
+	hideBattleElements();
+	enableKeyboard();
+	for (let a in btnToRemove)
+	{
+	  let btnRemove = document.getElementById(btnToRemove[a]);
+	  if(btnRemove)
+	  {
+	    buttonsDiv.removeChild(btnRemove);
+	  }
+	}
 }
-
-if (heroParty.hero.Fainted && heroParty.mage.Fainted && heroParty.priest.Fainted) {
-  handleDefeat();
-}
-else if (enemy1.HP <= 0 && enemy2.HP <= 0 && enemy3.HP <= 0) {
-    //checks if enemy 1, 2, 3 are dead
-    if (noOfEnemies > 3) {
-      //checks if theres 4 or 5 enemies
-      if (enemy4.HP <= 0) {
-        //checks if enemy 4 is dead
-        if (noOfEnemies > 4) {
-          // checks if theres 5 enemies
-          if (enemy5.HP <= 0) {
-            //checks if enemy 5 is dead
-            battleWon();
+    
+    if (heroParty.hero.Fainted)  //checks if hero are dead
+    {
+      if (heroesInParty.includes(heroParty.mage)) //check if mage is recruited
+      {
+        if (heroParty.mage.Fainted) //check if mage died
+        {
+          if (heroesInParty.includes(heroParty.priest)) // check if priest is recruited
+          {
+            if (heroParty.priest.Fainted) //check if priest died
+            {
+              battleLost(); //priest, mage, and hero are dead
+            }
           }
-        } else {
-          //only 4 enemies and all enemies are dead
-          battleWon();
+          else //no priest in party but there is mage and is dead
+          {
+            battleLost(); //mage and hero dead
+          }
         }
       }
-    } else {
-      //only 3 enemies and all are dead
-      battleWon();
+      else if (heroesInParty.includes(heroParty.priest)) //no mage, only hero and priest
+      {
+        if (heroParty.priest.Fainted) //check if priesst is dead
+        {
+          battleLost(); //priest and hero dead
+        }
+      }
+    } 
+}else if (enemy1.HP <= 0) //checks if enemy 1 is dead
+    {
+      if(noOfEnemies > 1)
+      {
+        if (enemy2.HP <= 0)
+        {
+          if (noOfEnemies > 2)
+          {
+            if (enemy3.HP <= 0)
+            {
+              if (noOfEnemies > 3)
+              {
+                if (enemy4.HP <= 0)
+                {
+                  battleWon();
+                }
+              }
+              else
+              {
+                battleWon();
+              }
+            }
+          }
+          else
+          {
+            battleWon();
+          }
+        }
+      }
+      else 
+      {
+        battleWon();
+      }
     }
   }
-}
 
 function partyLVLUP()
-{
-  console.log("LEVELING UP");
-  //party members add 1 level
-  console.log(Party.hero.LVL + " before lvl up");
-  Party.hero.LVL += 1;
-  Party.mage.LVL += 1;
-  Party.priest.LVL += 1;
-
-
-  // stats scaling
-  //hp
-  Party.hero.HP += Math.ceil(Math.random() * 10) + 7;
-  Party.mage.HP += Math.ceil(Math.random() * 6) + 3;
-  Party.priest.HP += Math.ceil(Math.random() * 8) + 5;
-  
-  //atk
-  Party.hero.ATK += Math.ceil(Math.random() * 2);
-  Party.mage.ATK += Math.ceil(Math.random() * 4);
-  Party.priest.ATK += Math.ceil(Math.random() * 2);
-  //def
-  Party.hero.DEF += Math.floor(Math.random() * 4);
-  Party.mage.DEF += Math.floor(Math.random() * 2);
-  Party.priest.DEF += Math.floor(Math.random() * 3);
-  //mdef
-  Party.hero.MDEF += Math.floor(Math.random() * 2);
-  Party.mage.MDEF += Math.floor(Math.random() * 5);
-  Party.priest.MDEF += Math.floor(Math.random() * 4);
-  
-
-  //enemies
-  if (Party.hero.LVL != 2) //enemy scaling starts after hero lvl 2
   {
-    //enemy HP scaling
-    enemies.slime.HP += Math.ceil(Math.random() * 6) + 3;
-    enemies.skeleton.HP += Math.ceil(Math.random() * 8) + 5;
-    enemies.goblin.HP += Math.ceil(Math.random() * 8) + 5;
-    enemies.orc.HP += Math.ceil(Math.random() * 11) + 8;
-    enemies.kitsune.HP += Math.ceil(Math.random() * 6) + 4;
-    enemies.werewolf.HP += Math.ceil(Math.random() * 7) + 4;
-    enemies.mountainTengu.HP += Math.ceil(Math.random() * 6) + 4;
-    enemies.skyTengu.HP += Math.ceil(Math.random() * 6) + 3;
+    console.log("LEVELING UP");
+    //party members add 1 level
+    console.log(Party.hero.LVL + " before lvl up");
+    Party.hero.LVL += 1;
+    Party.thief.LVL += 1;
+    Party.mage.LVL += 1;
+    Party.priest.LVL += 1; 
 
-    //enemy ATK
-    enemies.slime.ATK += Math.ceil(Math.random() * 2) - 1;
-    enemies.skeleton.ATK += Math.ceil(Math.random() * 8) + 5;
-    enemies.goblin.ATK += Math.ceil(Math.random() * 8) + 5;
-    enemies.orc.ATK += Math.ceil(Math.random() * 11) + 8;
-    enemies.kitsune.ATK += Math.ceil(Math.random() * 6) + 4;
-    enemies.werewolf.ATK += Math.ceil(Math.random() * 7) + 4;
-    enemies.mountainTengu.ATK += Math.ceil(Math.random() * 6) + 4;
-    enemies.skyTengu.ATK += Math.ceil(Math.random() * 6) + 3;
+    
+    // stats scaling
+    //hp
+    Party.hero.HP += Math.ceil(Math.random() * 10) + 7;
+    Party.thief.HP += Math.ceil(Math.random() * 8) + 5;
+    Party.mage.HP += Math.ceil(Math.random() * 6) + 3;
+    Party.priest.HP += Math.ceil(Math.random() * 8) + 5;
 
-    //enemy DEF
-    enemies.slime.DEF += Math.floor(Math.random() * 2);
-    enemies.skeleton.DEF += Math.floor(Math.random() * 3);
-    enemies.goblin.DEF += Math.floor(Math.random() * 3);
-    enemies.orc.DEF += Math.floor(Math.random() * 4);
-    enemies.kitsune.DEF += Math.floor(Math.random() * 2);
-    enemies.werewolf.DEF += Math.floor(Math.random() * 3);
-    enemies.mountainTengu.DEF += Math.floor(Math.random() * 3);
-    enemies.skyTengu.DEF += Math.floor(Math.random() * 2);
+    
+    
+    //atk
+    Party.hero.ATK += Math.ceil(Math.random() * 2);
+    Party.thief.ATK += Math.ceil(Math.random() * 2);
+    Party.mage.ATK += Math.ceil(Math.random() * 4);
+    Party.priest.ATK += Math.ceil(Math.random() * 2);
+    //def
+    Party.hero.DEF += Math.floor(Math.random() * 4);
+    Party.thief.DEF += Math.floor(Math.random() * 3);
+    Party.mage.DEF += Math.floor(Math.random() * 2);
+    Party.priest.DEF += Math.floor(Math.random() * 3);
+    //mdef
+    Party.hero.MDEF += Math.floor(Math.random() * 2);
+    Party.thief.MDEF += Math.floor(Math.random() * 2);
+    Party.mage.MDEF += Math.floor(Math.random() * 5);
+    Party.priest.MDEF += Math.floor(Math.random() * 4);
+    
 
-    //enemy MDEF
-    enemies.slime.MDEF += Math.floor(Math.random() * 2);
-    enemies.skeleton.MDEF += Math.floor(Math.random() * 3);
-    enemies.goblin.MDEF += Math.floor(Math.random() * 2);
-    enemies.orc.MDEF += Math.floor(Math.random() * 2 - 0.1); //very low chancec to gain magic defense
-    enemies.kitsune.MDEF += Math.floor(Math.random() * 5);
-    enemies.werewolf.MDEF += Math.floor(Math.random() * 3);
-    enemies.mountainTengu.MDEF += Math.floor(Math.random() * 4);
-    enemies.skyTengu.MDEF += Math.floor(Math.random() * 5);
-  }    
-  console.log(Party.hero.LVL + " after lvl up");
-  //crit chance will always remain constant
+    //boss scaling
+    boss.Phase1.LVL++;
+    boss.Phase2.Body.LVL++;
+    boss.Phase2.Arms.LVL++;
+    boss.Phase3.LVL++;
+    
+    boss.Phase1.HP += Math.ceil(Math.random() * 6) + 3;
+    boss.Phase1.ATK += Math.ceil(Math.random() * 4);
+    boss.Phase1.DEF += Math.floor(Math.random() * 4);
+    boss.Phase1.MDEF += Math.floor(Math.random() * 4);
 
-  //no speed since speed scaling will not change anything in turn order
-  //Too high of speed stat can make dodges too common
-}
+    boss.Phase2.Body.HP += Math.ceil(Math.random() * 10) + 7;
+    boss.Phase2.Body.ATK += Math.ceil(Math.random() * 4);
+    boss.Phase2.Body.DEF += Math.floor(Math.random() * 4);
+    boss.Phase2.Body.MDEF += Math.floor(Math.random() * 4);
+
+    boss.Phase2.Arms.HP += Math.ceil(Math.random() * 8) + 5;
+    boss.Phase2.Arms.ATK += Math.ceil(Math.random() * 4);
+    boss.Phase2.Arms.DEF += Math.floor(Math.random() * 4);
+    boss.Phase2.Arms.MDEF += Math.floor(Math.random() * 4);
+
+    boss.Phase3.HP += Math.ceil(Math.random() * 4) + 1;
+    boss.Phase3.ATK += Math.ceil(Math.random() * 6) + 1;
+    boss.Phase3.DEF += Math.floor(Math.random() * 2);
+    boss.Phase3.MDEF += Math.floor(Math.random() * 3);
+    //enemies
+    if (Party.hero.LVL != 2) //enemy scaling starts after hero lvl 2
+    {
+      //enemy HP scaling
+      enemies.slime.HP += Math.ceil(Math.random() * 6) + 3;
+      enemies.skeleton.HP += Math.ceil(Math.random() * 8) + 5;
+      enemies.goblin.HP += Math.ceil(Math.random() * 8) + 5;
+      enemies.orc.HP += Math.ceil(Math.random() * 11) + 8;
+      enemies.kitsune.HP += Math.ceil(Math.random() * 6) + 4;
+      enemies.werewolf.HP += Math.ceil(Math.random() * 7) + 4;
+      enemies.mountainTengu.HP += Math.ceil(Math.random() * 6) + 4;
+      enemies.skyTengu.HP += Math.ceil(Math.random() * 6) + 3;
+
+      //enemy ATK
+      enemies.slime.ATK += Math.ceil(Math.random() * 2) - 1;
+      enemies.skeleton.ATK += Math.ceil(Math.random() * 8) + 5;
+      enemies.goblin.ATK += Math.ceil(Math.random() * 8) + 5;
+      enemies.orc.ATK += Math.ceil(Math.random() * 11) + 8;
+      enemies.kitsune.ATK += Math.ceil(Math.random() * 6) + 4;
+      enemies.werewolf.ATK += Math.ceil(Math.random() * 7) + 4;
+      enemies.mountainTengu.ATK += Math.ceil(Math.random() * 6) + 4;
+      enemies.skyTengu.ATK += Math.ceil(Math.random() * 6) + 3;
+
+      //enemy DEF
+      enemies.slime.DEF += Math.floor(Math.random() * 2);
+      enemies.skeleton.DEF += Math.floor(Math.random() * 3);
+      enemies.goblin.DEF += Math.floor(Math.random() * 3);
+      enemies.orc.DEF += Math.floor(Math.random() * 4);
+      enemies.kitsune.DEF += Math.floor(Math.random() * 2);
+      enemies.werewolf.DEF += Math.floor(Math.random() * 3);
+      enemies.mountainTengu.DEF += Math.floor(Math.random() * 3);
+      enemies.skyTengu.DEF += Math.floor(Math.random() * 2);
+
+      //enemy MDEF
+      enemies.slime.MDEF += Math.floor(Math.random() * 2);
+      enemies.skeleton.MDEF += Math.floor(Math.random() * 3);
+      enemies.goblin.MDEF += Math.floor(Math.random() * 2);
+      enemies.orc.MDEF += Math.floor(Math.random() * 2 - 0.1); //very low chancec to gain magic defense
+      enemies.kitsune.MDEF += Math.floor(Math.random() * 5);
+      enemies.werewolf.MDEF += Math.floor(Math.random() * 3);
+      enemies.mountainTengu.MDEF += Math.floor(Math.random() * 4);
+      enemies.skyTengu.MDEF += Math.floor(Math.random() * 5);
+    }    
+    console.log(Party.hero.LVL + " after lvl up");
+    //crit chance will always remain constant
+
+    //no speed since speed scaling will not change anything in turn order
+    //Too high of speed stat can make dodges too common
+  }
 
 //Heroes Animation
 function playHeroAttackAnimation(heroId, attackGifId, attackGifDuration) {
@@ -1572,7 +1771,7 @@ if (t) {
 }
 else{
   heroAttacked.Dodged = false;
-  if(damage < 0)
+  if(damage <= 0)
   {
     damage = 1;
   }
@@ -1580,6 +1779,7 @@ else{
 
 if (Math.random() < Attacker.CR)
 {
+  console.log(Attacker.name + " got a CRITICAL HIT!");
   damage = damage * 2;  //crit hit
 }
 // Update the hero's health
