@@ -7,14 +7,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
 </head>
 <body>
-	<div id="maze_container"><!-- --></div>
+	<div class="chaos-domain" id="title-screen">
+        <h1 class="title">Chaos Domain</h1>
+        <h3 class="subtitle">Battle for the Omega</h3>
+        <div class="sword"></div>
+        <div class="button-container">
+            <div class="button" onclick="startNewGame()">Start Game</div>
+            <div class="button" onclick="openSettings()">Settings</div>
+            <div class="button" onclick="exitGame()">Exit</div>
+        </div>
+        <div class="dialog-box" id="mainDialog">
+            <p id="dialogText"></p>
+        </div>
+    </div>
+
+	<div id="maze_container" style="display: none;"><!-- --></div>
 	<div class="overlay-top"></div>
     <div class="overlay-bottom"></div>
 	<div id="victory-message">
-		You leveled up by one level!
 	  </div>
 	<div id="lost-life-message">
-		You lost one life
 	</div>
 	<div id="wholeBattle">
 	<img src='battleBg.png' style="display: none" id="battle-area">
@@ -152,6 +164,14 @@
 		<img id="skyTengu-death-gif" class="enemy-death-gif" src="skyTengu-death.gif" style="display: none;">
 		<img id="werewolf-death-gif" class="enemy-death-gif" src="werewolf-death.gif" style="display: none;">
 	  <!-- Enemy Death GIF End -->
+
+	  <!-- Boss GIF -->
+	  <div id="bossPhase1" class="enemyBox">
+		<img class="" src="bossphase1.gif" style="display: none">
+	  </div>
+	  <img src="Moon_Lord.gif" style="display: none;" id="bossPhase2">
+	  <img src="oeneri_phase3.gif" style="display: none;" id="bossPhase3">
+	  <!-- Boss GIF End -->
 
 	  <button id="exit-btn" style="display: none;">Click to Exit battle</button>
 	  <div id="victory-message">You won! Next Round</div>
