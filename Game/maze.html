@@ -8,15 +8,16 @@
 </head>
 <body>
 	<div id="maze_container"><!-- --></div>
-	<img src='battleBg.png' style="display: none" id="battle-area">
 	<div class="overlay-top"></div>
     <div class="overlay-bottom"></div>
-	<div id="victory-message" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: yellow; font-size: 50px; z-index: 999;">
+	<div id="victory-message">
 		You leveled up by one level!
 	  </div>
-	<div id="lost-life-message" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: red; font-size: 100px; z-index: 999;">
+	<div id="lost-life-message">
 		You lost one life
 	</div>
+	<div id="wholeBattle">
+	<img src='battleBg.png' style="display: none" id="battle-area">
 
 
 	<!-- Health Bar -->
@@ -155,6 +156,7 @@
 	  <button id="exit-btn" style="display: none;">Click to Exit battle</button>
 	  <div id="victory-message">You won! Next Round</div>
 	  <button id="continue-btn" style="display: none;">Continue</button>
+	  </div>
 	<script src="script.js"></script>
 	<script>
 
