@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battle System</title>
+  <style>
+    #hero,
+    #enemy {
+      margin-bottom: 20px;
+    }
+
+    #hero-health,
+    #enemy-health {
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 20px;
+    }
+
+    #victory-message {
+      display: none;
+      font-weight: bold;
+      font-size: 24px;
+      color: green;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="priest">
+  <h2>Priest</h2>
+  <div id="priest-health">HP: <span id="priest-health-value">100</span></div>
+  <div id="priest-damage">Damage: <span id="priest-damage-value" style="color: green;">0</span></div>
+  <div id="priest-taken-damage">Taken Damage: <span id="priest-taken-damage-value" style="color: red;">0</span></div>
+  <div id="priest-dodge" style="color: green;"></div> <!-- Dodge message container -->
+  <div id="dodge-counter">Dodge Counter: <span id="dodge-counter-value">0</span></div>
+</div>
+<div id="enemy">
+  <h2>Enemy</h2>
+  <div id="enemy-health">HP: <span id="enemy-health-value">100</span></div>
+</div>
+<button id="attack-btn">Attack</button>
+<button id="exit-btn" style="display: none;">Click to Exit battle</button>
+<div id="victory-message">You won! Next Round<button id="continue-btn" style="display: none;">Continue</button></div>
+
+<script>
+  // Stat variables
+  let priestHP = 100;
+  const priestATK = Math.floor(Math.random() * (8 - 6 + 1)) + 6; // Random number between 6 and 8
+  const priestDEF = Math.floor(Math.random() * (12 - 10 + 1)) + 10; // Random number between 10 and 12
+  const priestMDEF = Math.floor(Math.random() * (16 - 14 + 1)) + 14; // Random number between 14 and 16
+  const priestSPD = Math.floor(Math.random() * (12 - 10 + 1)) + 10; // Random number between 10 and 12
+  let priestDamage = 0;
+  let priestTakenDamage = 0;
+  let priestDodged = false; // Track if the priest dodged
+  let dodgeCounter = 0; // Track the number of times priest dodges
+
+  let enemyHP = 100;
+  const enemyATK = 15;
+  const enemyDEF = 5;
+  const enemySPD = 12;
+
+  // Update health bars
+  function updateHealthBars() {
+    document.getElementById("priest-health-value").textContent = priestHP;
+    document.getElementById("enemy-health-value").textContent = enemyHP;
+  }
+
+  // Update damage counts
+  function updateDamageCounts() {
+    document.getElementById("priest-damage-value").textContent = priestDamage;
+    document.getElementById("priest-taken-damage-value").textContent = priestTakenDamage;
+    document.getElementById("dodge-counter-value").textContent = dodgeCounter;
+  }
+
+  // Display dodge message
+  function displayDodgeMessage() {
+    document.getElementById("priest-dodge").textContent = "Dodge!";
+    setTimeout(function() {
+      document.getElementById("priest-dodge").textContent = ""; // Clear the dodge message after a delay
+    }, 1000); // Display the dodge message for 1 second
+  }
+
+  // Check victory condition
+  function checkVictory() {
+    if (priestHP <= 0) {
+      document.getElementById("victory-message").textContent = "You lost! Game Over";
+      document.getElementById("victory-message").style.color = "red";
+      document.getElementById("victory-message").style.display = "block";
+      document.getElementById("attack-btn").disabled = true;
+    } else if (enemyHP <= 0) {
+      document.getElementById("victory-message").textContent = "You won! Next Round";
+      document.getElementById("victory-message").style.display = "block";
+      document.getElementById("continue-btn").style.display = "inline"; // Change to inline
+      document.getElementById("exit-btn").style.display = "inline"; // Display the exit button
+      document.getElementById("attack-btn").style.display = "none"; // Hide the attack button
+    }
+  }
+
+  // Priest attacks enemy
+  function priestAttack() {
+    let damage = Math.max(1, priestATK - enemyDEF);
+    // 20% chance to dodge or mitigate the attack
+    if (Math.random() < 0.2) {
+      damage = 0; // Priest dodges the attack
+      displayDodgeMessage();
+      priestDodged = true;
+      dodgeCounter++; // Increment the dodge counter
+    } else {
+      damage = Math.floor(damage * 0.8); // Priest mitigates the damage by 20%
+      priestDodged = false;
+    }
+    enemyHP -= damage;
+    priestTakenDamage += damage; // Add the taken damage to priest's total
+    updateHealthBars();
+    checkVictory();
+    priestDamage += damage;
+    updateDamageCounts();
+    
+    // Enemy attacks back
+    if (enemyHP > 0) {
+      enemyAttack();
+    }
+  }
+
+ // Enemy attacks priest
+function enemyAttack() {
+  // Calculate the damage based on enemy's attack and priest's defense
+  let damage = Math.max(1, enemyATK - priestDEF);
+
+  // Mitigate the damage by 20%
+  damage = Math.floor(damage * 0.8);
+
+  // Update the priest's health
+  priestHP -= damage;
+
+  // Update health bars and check victory condition
+  updateHealthBars();
+  checkVictory();
+}
+
+// Event listener for attack button
+document.getElementById("attack-btn").addEventListener("click", priestAttack);
+
+// Event listener for continue button
+document.getElementById("continue-btn").addEventListener("click", function() {
+  // Redirect to the next part of the maze or perform any desired action
+  console.log("Continue to the next part of the maze");
+});
+
+// Event listener for exit button
+document.getElementById("exit-btn").addEventListener("click", function() {
+  // Perform action to exit the battle
+  console.log("Exit battle");
+});
+
+// Initial update of health bars and damage counts
+updateHealthBars();
+updateDamageCounts();
+</script>
+
+</body>
+</html>

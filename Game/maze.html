@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div id="maze_container"><!-- --></div>
+	<img src='battleBg.png' style="display: none" id="battle-area">
+	<div class="overlay-top"></div>
+    <div class="overlay-bottom"></div>
+	<div id="victory-message" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: yellow; font-size: 50px; z-index: 999;">
+		You leveled up by one level!
+	  </div>
+	<div id="lost-life-message" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: red; font-size: 100px; z-index: 999;">
+		You lost one life
+	</div>
+
+
+	<!-- Health Bar -->
+	<div class="heroesHP" id="heroHealthBars" style="display: none">
+	<div id="hero" class="heroHP">
+		<h2>Hero</h2>
+		<div id="hero-health">HP: <progress id="hero-health-value"></progress></div>
+		<div id="hero-damage">Damage: <span id="hero-damage-value" style="color: green;">0</span></div>
+		<div id="hero-taken-damage">Taken Damage: <span id="hero-taken-damage-value" style="color: red;">0</span></div>
+		<div id="hero-dodge" style="color: green;"></div> <!-- Dodge message container -->
+		<div id="hero-dodge-counter">Dodge Counter: <span id="hero-dodge-counter-value">0</span></div>
+	  </div>
+	  
+	  <div>
+		<h2></h2>
+		<div style="opacity: 0">
+		<div id="thief-damage">Damage: <span id="thief-damage-value" style="color: green;">0</span></div>
+		<div id="thief-taken-damage">Taken Damage: <span id="thief-taken-damage-value" style="color: red;">0</span></div>
+		<div id="thief-dodge" style="color: green;"></div> <!-- Dodge message container -->
+		<div id="thief-dodge-counter">Dodge Counter: <span id="thief-dodge-counter-value">0</span></div>
+		</div>
+	  </div>
+	  
+	  <div id="mage" class="mageHP">
+		<h2>Mage</h2>
+		<div id="mage-health">HP: <progress id="mage-health-value"></progress></div>
+		<div id="mage-damage">Damage: <span id="mage-damage-value" style="color: green;">0</span></div>
+		<div id="mage-taken-damage">Taken Damage: <span id="mage-taken-damage-value" style="color: red;">0</span></div>
+		<div id="mage-dodge" style="color: green;"></div> <!-- Dodge message container -->
+		<div id="mage-dodge-counter">Dodge Counter: <span id="mage-dodge-counter-value">0</span></div>
+	  </div>
+	  
+	  <div id="priest" class="priestHP">
+		<h2>Priest</h2>
+		<div id="priest-health">HP: <progress id="priest-health-value"></progress></div>
+		<div id="priest-damage">Damage: <span id="priest-damage-value" style="color: green;">0</span></div>
+		<div id="priest-taken-damage">Taken Damage: <span id="priest-taken-damage-value" style="color: red;">0</span></div>
+		<div id="priest-dodge" style="color: green;"></div> <!-- Dodge message container -->
+		<div id="priest-dodge-counter">Dodge Counter: <span id="priest-dodge-counter-value">0</span></div>
+	  </div>
+	</div>
+	  
+	  <div id="turnOrderDisp" class="turnOrder"></div>
+	  
+	  <div id="btnDiv" class="attackButtons"></div>
+	  
+	  
+	  <!-- Enemy Health -->
+		<div class="enemyHP" id="enemyHealthBars" style="display: none">
+			<div class="enemy-container">
+				<h2 id="enemy1Name"></h2>
+				<div class="enemy-health">HP: <progress id="enemy1-health-value"></progress></div>
+			</div>
+			<div class="enemy-container">
+				<h2 id="enemy2Name"></h2>
+				<div class="enemy-health">HP: <progress id="enemy2-health-value"></progress></div>
+			</div>
+			<div class="enemy-container">
+				<h2 id="enemy3Name"></h2>
+				<div class="enemy-health">HP: <progress id="enemy3-health-value"></progress></div>
+			</div>
+		</div>
+	  <!-- Enemy Health End -->
+
+	  <!-- Enemy GIF -->
+	  <div id="enemy1" class="enemyBox">
+		<p id="enemy1Name"></p>
+		<img id="enemy1Gif" src="" alt="enemy1 gif" style="display: none">
+	  </div>
+	  <div id="enemy2" class="enemyBox">
+		<p id="enemy2Name"></p>
+		<img id="enemy2Gif" src="" alt="enemy2 gif" style="display: none">
+	  </div>
+	  <div id="enemy3" class="enemyBox">
+		<p id="enemy3Name"></p>
+		<img id="enemy3Gif" src="" alt="enemy3 gif" style="display: none">
+	  </div>
+	  <div id="enemy4" style="display:none;">
+		<p id="enemy4Name"></p>
+		<img id="enemy4Gif" src="" alt="enemy4 gif" style="display: none">
+	  </div>
+	  <div id="enemy5" style="display:none;">
+		<p id="enemy5Name"></p>
+		<img id="enemy5Gif" src="" alt="enemy5 gif" style="display: none">
+	  </div>
+	  <!-- Enemy GIF End -->
+
+	  <!-- Hero GIF -->
+	  <div id="hero1" class="heroBox">
+		<img class="hero1" id="hero1-gif" src="" alt="Hero 1" style="display: none">
+	  </div>
+	  <div id="hero2" class="heroBox">
+		<img class="hero2" id="hero2-gif" src="" alt="Hero 2" style="display: none">
+	  </div>
+	  <div id="hero3" class="heroBox">
+		<img class="hero3" id="hero3-gif" src="" alt="Hero 3" style="display: none">
+	  </div>
+	  <!-- Hero GIF End -->
+
+	  <div id="background-overlay" style="display: none; position: absolute; top: 30%; left: 0; width: 100%; height: 60%; background-image: url('blueAttack.jpg'); background-size: cover; background-position: center; z-index: 110;"></div>
+	  <!-- Hero Attack GIF -->
+	  <img id="hero-gif" src="heroAttack.gif" alt="Hero Animation" style="display: none">
+	  <img id="priest-gif" src="priestAttack.gif" alt="Priest Animation" style="display: none">
+	  <img id="mage-gif" src="mageAttack.gif" alt="Mage Animation" style="display: none">
+	  <!-- Hero Attack GIF End -->
+
+	  <!-- Hero Death GIF -->
+	  <img class="heroBox" id="hero-death-gif" src="heroDeath.gif" alt="Hero Death Animation" style="display: none">
+	  <img class="heroBox" id="priest-death-gif" src="priestDeath.gif" alt="Priest Death Animation" style="display: none">
+	  <img class="heroBox" id="mage-death-gif" src="mageDeath.gif" alt="Mage Death Animation" style="display: none">
+	  <!-- Hero Death GIF End -->
+
+	  <!-- Enemy Attack GIF -->
+	  <div id="enemyBackground-overlay" style="display: none; position: absolute; top: 30%; left: 0; width: 100%; height: 60%; background-image: url('orangeAttack.jpg'); background-size: cover; background-position: center; z-index: 110;"></div>
+	  <img id="slime-attack-gif" class="enemy-attack-gif" src="slime-attack.gif" style="display: none;">
+	  <img id="skeleton-attack-gif" class="enemy-attack-gif" src="skeleton-attack.gif" style="display: none;">
+	  <img id="goblin-attack-gif" class="enemy-attack-gif" src="goblin-attack.gif" style="display: none;">
+	  <img id="kitsune-attack-gif" class="enemy-attack-gif" src="kitsune-attack.gif" style="display: none;">
+	  <img id="mountainTengu-attack-gif" class="enemy-attack-gif" src="mountainTengu-attack.gif" style="display: none;">
+	  <img id="orc-attack-gif" class="enemy-attack-gif" src="orc-attack.gif" style="display: none;">
+	  <img id="skyTengu-attack-gif" class="enemy-attack-gif" src="skyTengu-attack.gif" style="display: none;">
+	  <img id="werewolf-attack-gif" class="enemy-attack-gif" src="werewolf-attack.gif" style="display: none;">
+	  <!-- Enemy Attack GIF End -->
+
+	  <!-- Enemy Death GIF -->
+		<img id="slime-death-gif" class="enemy-death-gif" src="slime-death.gif" style="display: none;">
+		<img id="skeleton-death-gif" class="enemy-death-gif" src="skeleton-death.gif" style="display: none;">
+		<img id="goblin-death-gif" class="enemy-death-gif" src="goblin-death.gif" style="display: none;">
+		<img id="kitsune-death-gif" class="enemy-death-gif" src="kitsune-death.gif" style="display: none;">
+		<img id="mountainTengu-death-gif" class="enemy-death-gif" src="mountainTengu-death.gif" style="display: none;">
+		<img id="orc-death-gif" class="enemy-death-gif" src="orc-death.gif" style="display: none;">
+		<img id="skyTengu-death-gif" class="enemy-death-gif" src="skyTengu-death.gif" style="display: none;">
+		<img id="werewolf-death-gif" class="enemy-death-gif" src="werewolf-death.gif" style="display: none;">
+	  <!-- Enemy Death GIF End -->
+
+	  <button id="exit-btn" style="display: none;">Click to Exit battle</button>
+	  <div id="victory-message">You won! Next Round</div>
+	  <button id="continue-btn" style="display: none;">Continue</button>
+	<script src="script.js"></script>
+	<script>
+
+	let Maze = new MazeBuilder(20, 20);
+	Maze.display("maze_container");
+
+	window.addEventListener("DOMContentLoaded", function(e) {
+    var maze = new Mazing("maze");
+	}, false);
+	</script>
+</body>
+</html>

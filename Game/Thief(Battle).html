@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battle System</title>
+  <style>
+    #thief,
+    #enemy {
+      margin-bottom: 20px;
+    }
+
+    #thief-health,
+    #enemy-health {
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 20px;
+    }
+
+    #victory-message {
+      display: none;
+      font-weight: bold;
+      font-size: 24px;
+      color: green;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="thief">
+  <h2>Thief</h2>
+  <div id="thief-health">HP: <span id="thief-health-value">100</span></div>
+  <div id="thief-damage">Damage: <span id="thief-damage-value" style="color: green;">0</span></div>
+  <div id="thief-taken-damage">Taken Damage: <span id="thief-taken-damage-value" style="color: red;">0</span></div>
+  <div id="thief-dodge" style="color: green;"></div> <!-- Dodge message container -->
+  <div id="dodge-counter">Dodge Counter: <span id="dodge-counter-value">0</span></div>
+</div>
+<div id="enemy">
+  <h2>Enemy</h2>
+  <div id="enemy-health">HP: <span id="enemy-health-value">100</span></div>
+</div>
+<button id="attack-btn">Attack</button>
+<button id="exit-btn" style="display: none;">Click to Exit battle</button>
+<div id="victory-message">You won! Next Round<button id="continue-btn" style="display: none;">Continue</button></div>
+
+<script>
+  // Stat variables
+  let thiefHP = 100;
+  const thiefATK = Math.floor(Math.random() * (10 - 8 + 1)) + 8; // Random number between 8 and 10
+  const thiefDEF = Math.floor(Math.random() * (14 - 12 + 1)) + 12; // Random number between 12 and 14
+  const thiefMDEF = Math.floor(Math.random() * (14 - 12 + 1)) + 12; // Random number between 12 and 14
+  const thiefSPD = Math.floor(Math.random() * (14 - 12 + 1)) + 12; // Random number between 12 and 14
+  let thiefDamage = 0;
+  let thiefTakenDamage = 0;
+  let thiefDodged = false; // Track if the thief dodged
+  let dodgeCounter = 0; // Track the number of times thief dodges
+
+  let enemyHP = 100;
+  const enemyATK = 15;
+  const enemyDEF = 5;
+  const enemySPD = 12;
+
+  // Update health bars
+  function updateHealthBars() {
+    document.getElementById("thief-health-value").textContent = thiefHP;
+    document.getElementById("enemy-health-value").textContent = enemyHP;
+  }
+
+  // Update damage counts
+  function updateDamageCounts() {
+    document.getElementById("thief-damage-value").textContent = thiefDamage;
+    document.getElementById("thief-taken-damage-value").textContent = thiefTakenDamage;
+    document.getElementById("dodge-counter-value").textContent = dodgeCounter;
+  }
+
+  // Display dodge message
+  function displayDodgeMessage() {
+    document.getElementById("thief-dodge").textContent = "Dodge!";
+    setTimeout(function() {
+      document.getElementById("thief-dodge").textContent = ""; // Clear the dodge message after a delay
+    }, 1000); // Display the dodge message for 1 second
+  }
+
+  // Check victory condition
+  function checkVictory() {
+    if (thiefHP <= 0) {
+      document.getElementById("victory-message").textContent = "You lost! Game Over";
+      document.getElementById("victory-message").style.color = "red";
+      document.getElementById("victory-message").style.display = "block";
+      document.getElementById("attack-btn").disabled = true;
+    } else if (enemyHP <= 0) {
+      document.getElementById("victory-message").textContent = "You won! Next Round";
+      document.getElementById("victory-message").style.display = "block";
+      document.getElementById("continue-btn").style.display = "inline"; // Change to inline
+      document.getElementById("exit-btn").style.display = "inline"; // Display the exit button
+      document.getElementById("attack-btn").style.display = "none"; // Hide the attack button
+    }
+  }
+
+  // Thief attacks enemy
+  function thiefAttack() {
+    let damage = Math.max(1, thiefATK - enemyDEF);
+    // 20% chance to dodge or mitigate the attack
+    if (Math.random() < 0.2) {
+      damage = 0; // Thief dodges the attack
+      displayDodgeMessage();
+      thiefDodged = true;
+      dodgeCounter++; // Increment the dodge counter
+    } else {
+      damage = Math.floor(damage * 0.8); // Thief mitigates the damage by 20%
+      thiefDodged = false;
+    }
+    enemyHP -= damage;
+    thiefTakenDamage += damage; // Add the taken damage to thief's total
+    updateHealthBars();
+    checkVictory();
+    thiefDamage += damage;
+    updateDamageCounts();
+    
+    // Enemy attacks back
+    if (enemyHP > 0) {
+      enemyAttack();
+    }
+  }
+
+ // Enemy attacks thief
+function enemyAttack() {
+  // Calculate the damage based on enemy's attack and thief's defense
+  let damage = Math.max(1, enemyATK - thiefDEF);
+
+  // Mitigate the damage by 20%
+  damage = Math.floor(damage * 0.8);
+
+  // Update the thief's health
+  thiefHP -= damage;
+
+  // Update health bars and check victory condition
+  updateHealthBars();
+  checkVictory();
+}
+
+// Event listener for attack button
+document.getElementById("attack-btn").addEventListener("click", thiefAttack);
+
+// Event listener for continue button
+document.getElementById("continue-btn").addEventListener("click", function() {
+  // Redirect to the next part of the maze or perform any desired action
+  console.log("Continue to the next part of the maze");
+});
+
+// Event listener for exit button
+document.getElementById("exit-btn").addEventListener("click", function() {
+  // Perform action to exit the battle
+  console.log("Exit battle");
+});
+
+// Initial update of health bars and damage counts
+updateHealthBars();
+updateDamageCounts();
+</script>
+
+</body>
+</html>

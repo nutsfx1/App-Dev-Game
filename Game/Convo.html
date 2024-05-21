@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Dialog Box</title>
+    <style>
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: "Pixelify Sans", sans-serif;
+        }
+
+        body {
+            background-color: var(--backgroundColor, black);
+        }
+
+        input[type=button] {
+            padding: 10px;
+        }
+
+        .centerAlign {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70%; 
+        }
+
+        #controlsContainer {
+            display: flex;
+            width: 100%;
+        }
+
+        #controls {
+            flex-shrink: 2;
+            padding: 10px;
+        }
+
+        #info {
+            flex-shrink: 1;
+            padding: 10px;
+        }
+
+        #mainContent {
+            height: 100%;
+            width: 100%;
+        }
+
+        #mainDialog {
+            background-clip: padding-box;
+            background-color: var(--dialogBoxColor, dodgerblue);
+            border-width: 8px;
+            border-style: solid;
+            border-image: url("border.gif");
+            border-image-repeat: repeat;
+            border-image-slice: 10;
+            border-image-width: 16px;
+            color: var(--fontColor, white);
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: x-large;
+            image-rendering: crisp-edges;
+            padding: 8px;
+            text-shadow: 2px 2px 1px black;
+            overflow: hidden;
+            cursor: pointer;
+            height: 200px; 
+            width: 700px;
+            word-wrap: break-word; 
+            display: flex;
+            align-items: flex-start; 
+            justify-content: flex-start;
+            flex-direction: column; 
+        }
+
+        #dialogContainer {
+            display: inline-block;
+            position: relative;
+        }
+
+        #moreTextIcon {
+            position: absolute;
+            left: calc(100% - 36px);
+            visibility: hidden;
+            animation-duration: 1s;
+            animation-name: moreTextIcon;
+            animation-iteration-count: infinite;
+        }
+
+        .animateScale {
+            animation-duration: 200ms;
+            animation-name: openScale;
+        }
+
+        @keyframes moreTextIcon {
+            from {
+                top: calc(100% - 32px);
+            }
+            to {
+                top: calc(100% - 26px);
+            }
+        }
+
+        @keyframes openScale {
+            from {
+                height: 16px;
+                width: 16px;
+            }
+            to {
+                height: var(--dialogHeight, 200px); 
+                width: var(--dialogWidth, 700px); 
+            }
+        }
+
+        @keyframes closeScale {
+            to {
+                height: 16px;
+                width: 16px;
+            }
+            from {
+                height: var(--dialogHeight, 200px);
+                width: var(--dialogWidth, 700px);
+            }
+        }
+
+      
+        #mainDialog.two-people {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 16px;
+        }
+
+        #mainDialog.two-people .message {
+            margin-bottom: 8px;
+        }
+
+        #mainDialog.two-people .character-name {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        #mainDialog.two-people .character-1 {
+            color: #FFA07A;
+        }
+
+        #mainDialog.two-people .character-2 {
+            color: #87CEEB; 
+        }
+
+        
+        .typewriter-text {
+            overflow: hidden; 
+            white-space: normal; 
+            animation: typewriter 2s steps(50) forwards; 
+        }
+
+        @keyframes typewriter {
+            from {
+                width: 0; 
+            }
+            to {
+                width: 100%; 
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="mainContent">
+    <div id="controlsContainer">
+        <div id="controls">
+            <button id="mageButton">Mage</button>
+            <button id="thiefButton">Thief</button>
+            <button id="priestButton">Priest</button>
+        </div>
+        <div id="info">
+        </div>
+    </div>	
+
+    <div class="centerAlign">
+        <div id="dialogContainer">
+            <div id="mainDialog" class="animateScale">  
+            </div>
+            <img src="moreText.gif" id="moreTextIcon">
+        </div>
+    </div>
+</div>
+
+<script>
+    class Typewriter {
+        constructor(element, texts) {
+            this.element = element;
+            this.texts = texts;
+            this.currentTextIndex = 0;
+            this.characterDelay = 1; 
+            this.textDelay = 0; 
+            this.init();
+        }
+
+        init() {
+            this.typeText();
+            this.element.addEventListener('click', () => {
+                this.deleteText();
+            });
+        }
+
+        typeText() {
+            const currentText = this.texts[this.currentTextIndex];
+            let charIndex = 0;
+
+            const typing = setInterval(() => {
+                if (charIndex === currentText.length) {
+                    clearInterval(typing);
+                } else {
+                    this.element.textContent += currentText[charIndex];
+                    charIndex++;
+                }
+            }, this.characterDelay);
+        }
+
+        deleteText() {
+            const currentText = this.texts[this.currentTextIndex];
+            let charIndex = currentText.length - 1;
+
+            const deleting = setInterval(() => {
+                if (charIndex === -1) {
+                    clearInterval(deleting);
+                    this.element.textContent = '';
+                    this.currentTextIndex = (this.currentTextIndex + 1) % this.texts.length;
+                    this.typeText();
+                } else {
+                    const newText = currentText.substring(0, charIndex);
+                    this.element.textContent = newText;
+                    charIndex--;
+                }
+            }, this.characterDelay);
+        }
+    }
+    document.getElementById('mageButton').addEventListener('click', () => {
+        talkToMageIrene();
+    });
+    document.getElementById('thiefButton').addEventListener('click', () => {
+        talkToThiefFerdinand();
+    });
+    document.getElementById('priestButton').addEventListener('click', () => {
+        talkToPriestessVenice();
+    });
+
+    function talkToMageIrene() {
+        const mainDialog = document.getElementById('mainDialog');
+        const mageTextArray = [
+            "User: Who are you, mysterious sorceress, and why do you seek my aid?",
+            "Irene: Adventurer, your arrival is no mere coincidence but a twist of fate. I, Irene, daughter of the darkness, implore your aid in my quest for redemption and revenge against the father who cast me aside like a forgotten spell.",
+            "User: Your story is tragic, Irene. But, how can I be sure you're not plotting against me?",
+            "Irene: I understand your caution, but our goals align. Together, we can defy the darkness that binds us. With your help, we can face my father and rewrite our fates.",
+            "User: Although we have the same enemy, we have different goals. I aim to bring peace to the Chaos Domain, to rewrite every person’s fate, and to be a worthy wielder of the Omega.",
+            "Irene: Your quest is noble, adventurer, but do not underestimate the ties that bind our destinies. By facing my father, we may uncover truths that illuminate the path to your goals. Together, we can shape the Chaos Domain into a realm where peace and balance reign supreme.",
+            "User: You speak wisely, Irene. Perhaps our paths are not so divergent after all. I will lend you my aid, but know that my ultimate allegiance lies with the greater good.",
+            "Irene: Your alliance is a boon, adventurer. Together, we shall navigate the shadows of betrayal and forge a new destiny where light triumphs over darkness and peace prevails over chaos.",
+            "User: Then let us embark on this journey together, Irene. For in unity, we shall find the strength to overcome any obstacle that dares to stand in our way."
+        ];
+        const mageTypewriter = new Typewriter(mainDialog, mageTextArray);
+    }
+
+    function talkToThiefFerdinand() {
+        const mainDialog = document.getElementById('mainDialog');
+        const thiefTextArray = [
+            "User: Who goes there? Show yourself!",
+            "Ferdinand: Easy there, friend. No need for hostility. The name's Ferdinand, just a humble traveler trying to navigate these troubled times.",
+            "User: A traveler, huh? In these lands, trust is a rare commodity. What brings you here?",
+            "Ferdinand: Curiosity, perhaps, or a stroke of fate. I overheard whispers of a quest, a journey fraught with peril and opportunity. And as a seeker of both, I couldn't resist the temptation to investigate further.",
+            "User: You're a bold one, Ferdinand. But boldness alone won't earn my trust. What assurance do I have that you won't turn your dagger against us when the opportunity arises?",
+            "Ferdinand: Ah, a fair question indeed. Trust is earned, not given freely. But let me assure you, my friend, my loyalty lies with those who offer the promise of reward and advancement. And in our shared endeavor, I see the potential for both.",
+            "User: You speak of loyalty, yet your words ring hollow. How can I be certain you won't betray me for your own gain?",
+            "Ferdinand: Actions speak louder than words, my friend. Judge me not by my words, but by my deeds. Give me a chance, and together, we may yet achieve greatness.",
+            "User: Very well, Ferdinand. I'll keep a wary eye on you, but for now, let us proceed cautiously. Our goals may align, but trust must be earned.",
+            "Ferdinand: Agreed, my friend. Let us navigate the twists and turns of fate together, and may our journey lead us to fortune and glory."
+        ];
+        const thiefTypewriter = new Typewriter(mainDialog, thiefTextArray);
+    }
+    function talkToPriestessVenice() {
+        const mainDialog = document.getElementById('mainDialog');
+        const veniceTextArray = [
+            "User: Priestess Venice, I come to you with a matter of utmost importance. Our land is under threat from the malevolent forces of Oeneri, and only with your divine guidance do we stand a chance at defeating him and purifying the Omega.",
+            "Venice: Oeneri... the darkness that has plagued our realm for centuries. It is a formidable adversary indeed. But why do you seek my aid in this matter?",
+            "User: Your connection to the divine, Priestess, is unparalleled. With your guidance, we can tap into the true power of the divine light, the very essence needed to banish Oeneri and cleanse the Omega of his taint.",
+            "Venice: The task you propose is daunting, [User's Name]. To wield such power is to invite great risk, not only to ourselves but to all who dwell in this realm.",
+            "User: I understand the risks, Priestess, but the fate of our world hangs in the balance. Together, we can harness the power of faith and righteousness to overcome any obstacle that stands in our way.",
+            "Venice: Very well, [User's Name]. For the sake of our world and all who inhabit it, I shall lend you my aid. But know this: the path ahead will be fraught with peril, and the cost of victory may be great.",
+            "User: Thank you, Priestess Venice. With your guidance and the strength of our conviction, I believe we can triumph over the darkness and restore balance to our land.",
+            "Venice: May the divine light illuminate our path and grant us the strength to face whatever challenges lie ahead. Let us embark on this journey together, [User's Name], and may our faith be our guide."
+        ];
+        const veniceTypewriter = new Typewriter(mainDialog, veniceTextArray);
+    }
+</script>
+</body>
+</html>

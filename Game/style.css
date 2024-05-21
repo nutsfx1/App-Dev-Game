@@ -1,0 +1,537 @@
+body {
+  font-family: "Pixelify Sans", sans-serif;
+}
+
+#maze_container {
+  position: relative;
+  margin: 1em auto;
+  width: fit-content;
+}
+
+#maze {
+  position: relative;
+  background-color: #948777;
+  background-image: radial-gradient(circle at 0% 0%, transparent 50%, rgba(0,0,0,0.2) 50%), radial-gradient(circle at center, rgba(0,0,0,0.2) 50%, transparent 50%), radial-gradient(circle at 100% 100%, transparent 50%, rgba(0,0,0,0.2) 50%), radial-gradient(circle at 0% 100%, transparent 50%, rgba(0,0,0,0.2) 50%), radial-gradient(circle at 100% 0%, transparent 50%, rgba(0,0,0,0.2) 50%);
+  background-size: 8em 8em;
+}
+
+
+#maze div {
+  display: flex;
+}
+
+#maze div div {
+  position: relative;
+  width: 1em;
+  height: 1em;
+}
+
+#maze div div::after {
+  position: absolute;
+  left: -3px;
+  top: -4px;
+  text-align: center;
+  text-shadow: 0 0 1px black;
+  font-size: 1em;
+  z-index: 10;
+}
+
+/* Battle Phase Background */
+#battle-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the entire area */
+  z-index: 90; /* Ensure it's on top of all other content */
+  pointer-events: none; /* Allows interaction with content beneath */
+}
+
+/*Targeting system Buttons*/
+#btnDiv.attackButtons {
+  position: absolute;
+  z-index: 109;
+  top: 25%;
+  left: 56%;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+#btnDiv.attackButtons button {
+  background-color: #333;
+  color: #fff;
+  font-family: 'Pixelify Sans', sans-serif;
+  font-size: 14px;
+  padding: 10px 20px;
+  border: 3px solid #fff;
+  border-radius: 0;
+  box-shadow: 4px 4px #000;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+#btnDiv.attackButtons button:hover {
+  background-color: #555;
+  box-shadow: 2px 2px #000;
+}
+/*Targeting system Buttons End*/
+
+.battle-element {
+  transition: opacity 0.5s ease;
+  opacity: 1;
+}
+
+.battle-element.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* Overlay Abttle Background */
+.overlay-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(1, 1, 1, 1);
+  z-index: 999;
+  transition: height 0.5s ease;
+}
+
+.overlay-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(1, 1, 1, 1);
+  z-index: 999;
+  transition: height 0.5s ease;
+}
+
+.overlay-active {
+  height: 50%;
+}
+/* Overlay Abttle Background End */
+
+#maze div div.door.exit::after {
+  content: "\1F6AA";
+}
+
+#maze div div.nubbin::after {
+  content: "\1F33C";
+}
+
+#maze div.nubbin:nth-of-type(3n)::after {
+  content: "\1F344";
+}
+
+#maze div.nubbin:nth-of-type(5n)::after {
+  content: "\1F33B";
+}
+
+#maze div.nubbin:nth-of-type(7n)::after {
+  content: "\1F48E";
+}
+
+#maze div.nubbin:nth-of-type(13n)::after {
+  content: "\1F381";
+}
+
+#maze div.hero::after {
+  content: "\1F9D9" !important;
+}
+
+#maze.face-right div.hero::after {
+  transform: scale(-1, 1);
+}
+
+#maze div div.wall,
+#maze div div.nubbin.wall,
+#maze div div.door.exit {
+  background-color: #3a3834;
+  background-image: linear-gradient(45deg, rgba(0,0,0,0.4) 45%, transparent 55%), linear-gradient(to bottom, rgba(0,0,0,0.4) 45%, transparent 55%);
+  background-size: 0.5em 0.5em;
+}
+
+#maze div div.nubbin.wall::after {
+  content: "";
+}
+
+#maze div div.sentinel.wall {
+  background: transparent;
+}
+
+#maze div div.sentinel.wall::after {
+  content: "\1F40A";
+  opacity: 100;
+}
+
+#maze div.sentinel.wall:nth-of-type(3n)::after {
+  content: "\1F40D";
+  opacity: 100;
+}
+
+#maze div div.key::after {
+  content: "\1F511";
+}
+
+#maze div div:nth-child(odd) {
+  width: 1em;
+}
+
+#maze div:nth-child(odd) div {
+  height: 1em;
+}
+
+#maze.finished::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  content: "Game Over";
+  background: rgba(0,0,0,0.6);
+  text-align: center;
+  text-transform: uppercase;
+  font-family: monospace;
+  font-size: 5em;
+  text-shadow: 2px 2px 2px rgba(0,0,0,0.8);
+  color: #fff;
+  z-index: 10;
+}
+
+#maze_output {
+  display: flex;
+  margin: 0.5em auto;
+}
+
+#maze_score,
+#maze_message {
+  font-family: fantasy;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+#maze_score {
+  flex: 1;
+  white-space: nowrap;
+  text-align: left;
+}
+
+#maze_score::before {
+  content: "Score: ";
+}
+
+#maze_score.has-key::after {
+  content: "\00a0\1F511";
+}
+
+#maze_message {
+  flex: 3;
+  text-align: right;
+}
+
+
+/*Heroes HP*/
+.heroesHP{
+  position: absolute;
+  z-index: 200;
+  color: aliceblue;
+}
+
+.turnOrder {
+  position: absolute;
+  overflow: hidden;
+  z-index: 100;
+  color: aliceblue;
+  right: 65%;
+  top: 30%;
+}
+
+/*Heroes HP Positioning*/
+.heroHP {
+  position: absolute;
+  left: 320%;
+  top: -165%;
+}
+
+.priestHP {
+  position: absolute;
+  left: 190%;
+  top: -165%;
+}
+
+.mageHP {
+  position: absolute;
+  left: 30%;
+  top: -165%;
+}
+/*Heroes HP Positioning End*/
+
+/*Enemies HP Positioning*/
+.enemyHP {
+  position: absolute;
+  bottom: 20px; /* Adjust as needed */
+  right: 0; /* Align HP bars to the right side of the screen */
+  transform: translateX(-5%); /* Shift HP bars horizontally */
+  z-index: 110; /* Ensure HP bars are above enemy boxes */
+  color: aliceblue;
+}
+
+.enemy-container {
+  display: inline-block;
+  margin-left: 20px; /* Adjust the margin between containers */
+  padding-right: 10px; /* Add padding to move it to the right */
+}
+
+/*Enemies HP Positioning End*/
+
+/*Knight Attacking*/
+:root {
+  --pixel-size: 4;
+}
+/*Enemy Box*/
+.enemyBox {
+  height: calc(128px * var(--pixel-size));
+  width: calc(128px * var(--pixel-size));
+  margin-right: 20px; /* Adjust the spacing between boxes */
+  position: absolute;
+  z-index: 100;
+}
+
+#enemy1 {
+  top: 10%; /* Adjusted to move more to the top */
+  left: 45%;
+  z-index: 105;
+}
+
+#enemy2 {
+  top: 10%; /* Adjusted to move more to the top */
+  left: 57%;
+  z-index: 105;
+}
+
+#enemy3 {
+  top: 10%; /* Adjusted to move more to the top */
+  left: 66%;
+  z-index: 105;
+}
+/*Enemy Box End*/
+
+/* Enemy Death GIFs */
+.enemy-death-gif {
+  height: calc(128px * var(--pixel-size)); /* Adjust as needed */
+  width: calc(128px * var(--pixel-size)); /* Adjust as needed */
+  position: absolute;
+  z-index: 105; /* Ensure the death animations are above enemy boxes */
+}
+
+/*Heroes Box*/
+.heroBox {
+  height: calc(128px * var(--pixel-size));
+  width: calc(128px * var(--pixel-size));
+  margin-right: 20px; /* Adjust the spacing between boxes */
+  position: absolute;
+  z-index: 100;
+}
+
+#hero1 {
+  top: 37%; /* Adjusted to move more to the top */
+  left: 20%;
+  z-index: 105;
+}
+
+#hero2 {
+  top: 12.5%; /* Adjusted to move more to the top */
+  left: 4%;
+  z-index: 105;
+}
+
+#hero3 {
+  top: 12.5%; /* Adjusted to move more to the top */
+  left: -7%;
+  z-index: 105;
+}
+/*Heroes Box End*/
+
+#hero-gif {
+  width: calc(86px * var(--pixel-size));
+  top: 41%; /* Adjusted to move more to the top */
+  left: 30%;
+  position: fixed;
+  display: none;
+  z-index: 110; /* Ensure attack GIF is above the hero */
+  image-rendering: pixelated;
+}
+
+#mage-gif {
+  width: calc(128px * var(--pixel-size));
+  position: absolute;
+  display: none;
+  z-index: 110; /* Ensure attack GIF is above the hero */
+  image-rendering: pixelated;
+}
+
+#priest-gif {
+  width: calc(128px * var(--pixel-size));
+  position: absolute;
+  display: none;
+  z-index: 110; /* Ensure attack GIF is above the hero */
+  image-rendering: pixelated;
+}
+
+.enemy-attack-gif {
+  width: calc(128px * var(--pixel-size)); /* Adjust the width as needed */
+  transform: scaleX(-1);
+  z-index: 110; /* Ensure the attack GIF is above other elements */
+  display: none; /* Initially hide the attack GIF */
+  image-rendering: pixelated;
+}
+
+
+/* Heroes GIF */
+/* Knight GIF */
+.hero1 {
+  width: calc(86px * var(--pixel-size));
+  image-rendering: pixelated;
+}
+
+.hero2 {
+  width: calc(128px * var(--pixel-size));
+  image-rendering: pixelated;
+}
+
+.hero3 {
+  width: calc(128px * var(--pixel-size));
+  image-rendering: pixelated;
+}
+
+/* Heroes GIF End*/
+
+
+/*Kitsune Animations*/
+.kitsune-class {
+  width: calc(128px * var(--pixel-size));
+  transform: scaleX(-1);
+  image-rendering: pixelated;
+}
+
+/*Slime Animations*/
+.slime-class {
+  width: calc(128px * var(--pixel-size));
+  image-rendering: pixelated;
+  transform: scaleX(-1);
+}
+
+/*Orc Animations*/
+.orc-class {
+  width: calc(128px * var(--pixel-size));
+  image-rendering: pixelated;
+  transform: scaleX(-1);
+}
+
+/*Werewolf Animations*/
+.werewolf-class {
+  width: calc(128px * var(--pixel-size));
+  image-rendering: pixelated;
+  transform: scaleX(-1);
+}
+
+/*Thief Animations*/
+.Character_thiefAttack {
+  animation: moveThiefAttack 1s steps(6) infinite;
+  width: calc(576px * var(--pixel-size));
+}
+
+.Character_thiefAttackSize{
+  position: absolute;
+  top: 28%; /* Position from the top */
+  left: 30%; /* Position from the left */
+  width: calc(96px * var(--pixel-size));
+  height: calc(96px * var(--pixel-size));
+  overflow: hidden;
+  z-index: 105;
+}
+
+/*MoonLord Animations*/
+.Character_moonLord {
+  width: calc(200px * var(--pixel-size));
+}
+
+.Character_moonLordSize{
+  position: absolute;
+  top: 0%; /* Position from the top */
+  left: 29%; /* Position from the left */
+  width: calc(200px * var(--pixel-size));
+  height: calc(220px * var(--pixel-size));
+  overflow: hidden;
+  z-index: 102;
+}
+
+/*Skeleton Animations*/
+.skeleton-class{
+  width: calc(128px * var(--pixel-size));
+  transform: scaleX(-1);
+  image-rendering: pixelated;
+}
+
+/*Goblin Animations*/
+.goblin-class {
+  width: calc(128px * var(--pixel-size));
+  transform: scaleX(-1);
+  image-rendering: pixelated;
+}
+
+/*Mountain Tengu Animations*/
+.mountainTengu-class {
+  width: calc(128px * var(--pixel-size));
+  transform: scaleX(-1);
+  image-rendering: pixelated;
+}
+
+/*Sky Tengu Animations*/
+.skyTengu-class {
+  width: calc(128px * var(--pixel-size));
+  transform: scaleX(-1);
+  image-rendering: pixelated;
+}
+
+.pixelart {
+  image-rendering: pixelated;
+}
+
+
+/*Battle System*/
+#hero, #thief, #mage, #priest{
+  margin-bottom: 20px;
+}
+
+.enemy{
+  margin-bottom: 20px;
+}
+
+#hero-health, #mage-health, #priest-health,
+#enemy-health {
+  font-weight: bold;
+}
+
+button {
+  margin-top: 20px;
+}
+
+#victory-message {
+  display: none;
+  font-weight: bold;
+  font-size: 24px;
+  color: green;
+  margin-top: 20px;
+}

@@ -1,0 +1,37 @@
+        const dialogMage = [
+            "User: Who are you, mysterious sorceress, and why do you seek my aid?",
+            "Irene: Adventurer, your arrival is no mere coincidence but a twist of fate. I, Irene, daughter of the darkness, implore your aid in my quest for redemption and revenge against the father who cast me aside like a forgotten spell.",
+            "User:  Your story is tragic, Irene. But, how can I be sure you're not plotting against me?",
+            "Irene: I understand your caution, but our goals align. Together, we can defy the darkness that binds us. With your help, we can face my father and rewrite our fates.",
+            "User: Although we have the same enemy, we have different goals. I aim to bring peace to the Chaos Domain, to rewrite every person’s fate, and to be a worthy wielder of the Omega."
+			"Irene: Your quest is noble, adventurer, but do not underestimate the ties that bind our destinies. By facing my father, we may uncover truths that illuminate the path to your goals. Together, we can shape the Chaos Domain into a realm where peace and balance reign supreme."
+			"User: You speak wisely, Irene. Perhaps our paths are not so divergent after all. I will lend you my aid, but know that my ultimate allegiance lies with the greater good."
+			"Irene: Your alliance is a boon, adventurer. Together, we shall navigate the shadows of betrayal and forge a new destiny where light triumphs over darkness and peace prevails over chaos."
+			"User: Then let us embark on this journey together, Irene. For in unity, we shall find the strength to overcome any obstacle that dares to stand in our way."
+        ];
+		
+		const dialogPriest = [
+			"User: Priestess Venice, I come to you with a matter of utmost importance. Our land is under threat from the malevolent forces of Oeneri, and only with your divine guidance do we stand a chance at defeating him and purifying the Omega."
+			"Venice: Oeneri... the darkness that has plagued our realm for centuries. It is a formidable adversary indeed. But why do you seek my aid in this matter?"
+			"User: Your connection to the divine, Priestess, is unparalleled. With your guidance, we can tap into the true power of the divine light, the very essence needed to banish Oeneri and cleanse the Omega of his taint."
+			"Venice: The task you propose is daunting, [User's Name]. To wield such power is to invite great risk, not only to ourselves but to all who dwell in this realm."
+			"User: I understand the risks, Priestess, but the fate of our world hangs in the balance. Together, we can harness the power of faith and righteousness to overcome any obstacle that stands in our way."
+			"Venice: Very well, Great Warrior. For the sake of our world and all who inhabit it, I shall lend you my aid. But know this: the path ahead will be fraught with peril, and the cost of victory may be great."
+			"User: Thank you, Priestess Venice. With your guidance and the strength of our conviction, I believe we can triumph over the darkness and restore balance to our land."
+			"Venice: May the divine light illuminate our path and grant us the strength to face whatever challenges lie ahead. Let us embark on this journey together, [User's Name], and may our faith be our guide."
+		];
+		
+		const dialogThief = [
+			"User: Who goes there? Show yourself!"
+			"Ferdinand: Easy there, friend. No need for hostility. The name's Ferdinand, just a humble traveler trying to navigate these troubled times."
+			"User: A traveler, huh? In these lands, trust is a rare commodity. What brings you here?"
+			"Ferdinand: Curiosity, perhaps, or a stroke of fate. I overheard whispers of a quest, a journey fraught with peril and opportunity. And as a seeker of both, I couldn't resist the temptation to investigate further."
+			"User: You're a bold one, Ferdinand. But boldness alone won't earn my trust. What assurance do I have that you won't turn your dagger against us when the opportunity arises?"
+			"Ferdinand: Ah, a fair question indeed. Trust is earned, not given freely. But let me assure you, my friend, my loyalty lies with those who offer the promise of reward and advancement. And in our shared endeavor, I see the potential for both."
+			"User: You speak of loyalty, yet your words ring hollow. How can I be certain you won't betray me for your own gain?"
+			"Ferdinand: Actions speak louder than words, my friend. Judge me not by my words, but by my deeds. Give me a chance, and together, we may yet achieve greatness."
+			"User: Very well, Ferdinand. I'll keep a wary eye on you, but for now, let us proceed cautiously. Our goals may align, but trust must be earned."
+			"Ferdinand: Agreed, my friend. Let us navigate the twists and turns of fate together, and may our journey lead us to fortune and glory."
+			
+		]
+		
