@@ -689,11 +689,11 @@ class MazeBuilder {
     Phase1:{
       name: "Oeneri",
       LVL: 10,
-      HP: 40,
+      HP: 30,
       ATK: 20,
       CR: 0.10,
-      DEF: 25,
-      MDEF: 15,
+      DEF: 20,
+      MDEF: 13,
       SPD: 999,
       isBoss: true,
       DamageDone: 0,
@@ -705,10 +705,10 @@ class MazeBuilder {
       Body:{
         name: "Overlord of the Chaos Domain, Oeneri",
         LVL: 10,
-        HP: 40,
-        ATK: 20,
-        CR: 0.10,
-        DEF: 25,
+        HP: 30,
+        ATK: 16,
+        CR: 0.19,
+        DEF: 20,
         MDEF: 15,
         SPD: 999,
         isBoss: true,
@@ -720,11 +720,11 @@ class MazeBuilder {
       Arms:{
         name: "Arm of the Overlord",
         LVL: 10,
-        HP: 40,
+        HP: 20,
         ATK: 20,
         CR: 0.10,
-        DEF: 25,
-        MDEF: 15,
+        DEF: 15,
+        MDEF: 13,
         SPD: 999,
         isBoss: true,
         DamageDone: 0,
@@ -736,10 +736,10 @@ class MazeBuilder {
       name: "Mind of Oeneri",
         LVL: 10,
         HP: 40,
-        ATK: 20,
-        CR: 0.10,
-        DEF: 25,
-        MDEF: 15,
+        ATK: 26,
+        CR: 0.17,
+        DEF: 5,
+        MDEF: 5,
         SPD: 999,
         isBoss: true,
         DamageDone: 0,
@@ -902,7 +902,6 @@ function enemyNoDeclaration(){
   noOfEnemies = Math.ceil(Math.random() * 3);
 
   console.log("Number of enemies : " + noOfEnemies);
-  enemy1, enemy2, enemy3, enemy4, enemy5;
   enemy1 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
   enemy2 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
   enemy3 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
