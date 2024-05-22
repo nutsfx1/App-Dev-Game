@@ -261,19 +261,19 @@ body {
 .heroHP {
   position: absolute;
   left: 320%;
-  top: -165%;
+  top: -220%;
 }
 
 .priestHP {
   position: absolute;
   left: 190%;
-  top: -165%;
+  top: -220%;
 }
 
 .mageHP {
   position: absolute;
   left: 30%;
-  top: -165%;
+  top: -220%;
 }
 /*Heroes HP Positioning End*/
 
@@ -312,18 +312,21 @@ body {
   top: 10%; /* Adjusted to move more to the top */
   left: 45%;
   z-index: 105;
+  opacity: 100;
 }
 
 #enemy2 {
   top: 10%; /* Adjusted to move more to the top */
   left: 57%;
   z-index: 105;
+  opacity: 100;
 }
 
 #enemy3 {
   top: 10%; /* Adjusted to move more to the top */
   left: 66%;
   z-index: 105;
+  opacity: 100;
 }
 
 .bossPhase2 {
