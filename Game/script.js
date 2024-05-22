@@ -53,7 +53,7 @@ class MazeBuilder {
     }
 
     placeSentinels() {
-      const numberOfSentinels = 200; 
+      const numberOfSentinels = 1; 
       for (let i = 0; i < numberOfSentinels; i++) {
         let row = this.rand(1, this.height);
         let col = this.rand(1, this.width);
@@ -62,7 +62,7 @@ class MazeBuilder {
     }
 
     placeNubbins() {
-      const numberOfSentinels = 3; 
+      const numberOfSentinels = 5; 
       for (let i = 0; i < numberOfSentinels; i++) {
         let row = this.rand(1, this.height);
         let col = this.rand(1, this.width);
@@ -432,7 +432,7 @@ class MazeBuilder {
     }
   
     if(nextStep.match(/exit/)) {
-      bossBattle();
+      bossBattle()
       return;
     }
   
@@ -446,6 +446,7 @@ class MazeBuilder {
   
     if(nextStep.match(/nubbin/)) {
       this.heroTakeTreasure();
+      partyBonusLevel()
       return;
     }
   
@@ -699,7 +700,8 @@ class MazeBuilder {
       DamageDone: 0,
       DamageTaken: 0,
       isMagic: true,
-      isEnemy: true
+      isEnemy: true,
+      type: "bossphase1"
     },
     Phase2:{
       Body:{
@@ -715,7 +717,8 @@ class MazeBuilder {
         DamageDone: 0,
         DamageTaken: 0,
         isMagic: true,
-        isEnemy: true
+        isEnemy: true,
+        type: 'moonLord'
       },
       Arms:{
         name: "Arm of the Overlord",
@@ -729,7 +732,8 @@ class MazeBuilder {
         isBoss: true,
         DamageDone: 0,
         DamageTaken: 0,
-        isEnemy: true
+        isEnemy: true,
+        type: 'moonLord'
       }
     },
     Phase3:{
@@ -754,6 +758,12 @@ class MazeBuilder {
   buttonsDiv, button1, button2, button3, button4, button5, bossPhase = 0;
 
   function initalizeBattle(){
+    document.getElementById('enemy1Gif').style.opacity = '100';
+    document.getElementById('enemy2Gif').style.opacity = '100';
+    document.getElementById('enemy3Gif').style.opacity = '100';
+    document.getElementById('hero1-gif').style.opacity = '100';
+    document.getElementById('hero2-gif').style.opacity = '100';
+    document.getElementById('hero3-gif').style.opacity = '100';
     turnOrder = [];
     disableDisplay();
     enemyNoDeclaration();
@@ -770,7 +780,6 @@ class MazeBuilder {
   }
 
   function bossBattle(){
-    showBattleElements();
     disableDisplay();
     bossPhase++;
     turnOrder = []; //reset turn order
@@ -794,6 +803,7 @@ class MazeBuilder {
     }
     console.log("mi problemmo check");
   
+    showBattleElements();
     bossSequenceDelcare();
     setTurnOrder();
     setEnemyNames();
@@ -863,36 +873,12 @@ function disableDisplay(){
 }
 
 function bossSequenceDelcare(){
-  if (bossPhase == 1)
-  {
-    enemy1 = structuredClone(boss.Phase1);
-    noOfEnemies = 1;
-    document.getElementById('battle-area').style.display = "block";
-    document.getElementById('bossPhase1').style.display = "block";
-    document.getElementById('bossPhase2').style.display = "none";
-    document.getElementById('bossPhase3').style.display = "none";
-  }
-  else if (bossPhase == 2)
-  {
     enemy1 = structuredClone(boss.Phase2.Arms);
     enemy1.name = "Left " + enemy1.name;
     enemy2 = structuredClone(boss.Phase2.Body);
     enemy3 = structuredClone(boss.Phase2.Arms);
     enemy3.name = "Right " + enemy3.name;
     noOfEnemies = 3;
-    document.getElementById('bossPhase1').style.display = "none";
-    document.getElementById('bossPhase2').style.display = "block";
-    document.getElementById('bossPhase3').style.display = "none";
-    document.getElementById('battle-area').style.display = "block";
-  }
-  else if (bossPhase == 3)
-  {
-    enemy1 = structuredClone(boss.Phase3);
-    noOfEnemies = 1;
-    document.getElementById('bossPhase1').style.display = "none";
-    document.getElementById('bossPhase2').style.display = "none";
-    document.getElementById('bossPhase3').style.display = "block";
-  }
 }
 
 function enemyNoDeclaration(){
@@ -900,6 +886,7 @@ function enemyNoDeclaration(){
   heroParty = structuredClone(Party);
   aliveHeroes = [heroParty.hero, heroParty.mage, heroParty.priest];
   noOfEnemies = Math.ceil(Math.random() * 3);
+  noOfEnemies = aliveHeroes.length; // number of alive heroes
 
   console.log("Number of enemies : " + noOfEnemies);
   enemy1, enemy2, enemy3, enemy4, enemy5;
@@ -949,43 +936,41 @@ function getClass(enemyType) {
 
 function setEnemyNames() {
   // Reset and set enemy names and GIFs
-  document.getElementById('enemy1Name').innerText = enemy1.name;
-  const enemy1Gif = document.getElementById('enemy1Gif');
-  enemy1Gif.style.display = 'block';
-  enemy1Gif.src = getGifPath(enemy1.type);
-  enemy1Gif.className = getClass(enemy1.type);
+    document.getElementById('enemy1Name').innerText = enemy1.name;
+    const enemy1Gif = document.getElementById('enemy1Gif');
+    enemy1Gif.style.display = 'block';
+    enemy1Gif.src = getGifPath(enemy1.type);
+    enemy1Gif.className = getClass(enemy1.type);
+    
+    document.getElementById('enemy2Name').innerText = enemy2.name;
+    const enemy2Gif = document.getElementById('enemy2Gif');
+    enemy2Gif.style.display = 'block';
+    enemy2Gif.src = getGifPath(enemy2.type);
+    enemy2Gif.className = getClass(enemy2.type);
   
-  document.getElementById('enemy2Name').innerText = enemy2.name;
-  const enemy2Gif = document.getElementById('enemy2Gif');
-  enemy2Gif.style.display = 'block';
-  enemy2Gif.src = getGifPath(enemy2.type);
-  enemy2Gif.className = getClass(enemy2.type);
-
-  document.getElementById('enemy3Name').innerText = enemy3.name;
-  const enemy3Gif = document.getElementById('enemy3Gif');
-  enemy3Gif.style.display = 'block';
-  enemy3Gif.src = getGifPath(enemy3.type);
-  enemy3Gif.className = getClass(enemy3.type);
-
-  if (noOfEnemies > 3) {
-    document.getElementById('enemy4').style.display = 'block';
-    document.getElementById('enemy4Name').innerText = enemy4.name;
-    const enemy4Gif = document.getElementById('enemy4Gif');
-    enemy4Gif.style.display = 'block';
-    enemy4Gif.src = getGifPath(enemy4.type);
-    enemy4Gif.className = getClass(enemy4.type);
-    if (noOfEnemies > 4) {
-      document.getElementById('enemy5').style.display = 'block';
-      document.getElementById('enemy5Name').innerText = enemy5.name;
-      const enemy5Gif = document.getElementById('enemy5Gif');
-      enemy5Gif.style.display = 'block';
-      enemy5Gif.src = getGifPath(enemy5.type);
-      enemy5Gif.className = getClass(enemy5.type);
+    document.getElementById('enemy3Name').innerText = enemy3.name;
+    const enemy3Gif = document.getElementById('enemy3Gif');
+    enemy3Gif.style.display = 'block';
+    enemy3Gif.src = getGifPath(enemy3.type);
+    enemy3Gif.className = getClass(enemy3.type);
+  
+    if (noOfEnemies > 3) {
+      document.getElementById('enemy4').style.display = 'block';
+      document.getElementById('enemy4Name').innerText = enemy4.name;
+      const enemy4Gif = document.getElementById('enemy4Gif');
+      enemy4Gif.style.display = 'block';
+      enemy4Gif.src = getGifPath(enemy4.type);
+      enemy4Gif.className = getClass(enemy4.type);
+      if (noOfEnemies > 4) {
+        document.getElementById('enemy5').style.display = 'block';
+        document.getElementById('enemy5Name').innerText = enemy5.name;
+        const enemy5Gif = document.getElementById('enemy5Gif');
+        enemy5Gif.style.display = 'block';
+        enemy5Gif.src = getGifPath(enemy5.type);
+        enemy5Gif.className = getClass(enemy5.type);
+      }
     }
   }
-}
-
-
 
 function createAtkEnemyBtn(){
   //create attack buttons based on enemy
@@ -1129,135 +1114,95 @@ function queueAnimation(animation) {
 
 // Update health bars
 function updateHealthBars() {
-  // Update hero health bars
-  document.getElementById("hero-health-value").value = heroParty.hero.HP;
-  document.getElementById("mage-health-value").value = heroParty.mage.HP;
-  document.getElementById("priest-health-value").value = heroParty.priest.HP;
+   // Update hero health bars
+   document.getElementById("hero-health-value").value = heroParty.hero.HP;
+   document.getElementById("mage-health-value").value = heroParty.mage.HP;
+   document.getElementById("priest-health-value").value = heroParty.priest.HP;
 
-  // Check each hero's HP and display death animation if HP reaches 0
-  if (heroParty.hero.HP <= 0) {
-    heroParty.hero.HP = 0;
-    showHeroDeathAnimation(heroParty.hero, "hero");
-  }
+   if (enemy1.HP <= 0)
+    {
+      enemy1.HP = 0;
+      splcCheck(enemy1);
+      btnRemoval('btn1');
+    }
+    document.getElementById('enemy1-health-value').value = enemy1.HP; 
 
-  if (heroParty.mage.HP <= 0) {
-    heroParty.mage.HP = 0;
-    showHeroDeathAnimation(heroParty.mage, "mage");
-  }
+    if (noOfEnemies > 1)
+    {
+      if (enemy2.HP <= 0)
+      {
+        enemy2.HP = 0;
+        splcCheck(enemy2);
+        let buttonPass = document.getElementById(button2);
+        btnRemoval('btn2');
+      }
+      document.getElementById('enemy2-health-value').value = enemy2.HP;
+      if (noOfEnemies > 2)
+      {
+        if (enemy3.HP <= 0)
+        {
+          enemy3.HP = 0;
+          splcCheck(enemy3);
+          let buttonPass = document.getElementById(button3);
+          btnRemoval('btn3');
+        }
+        document.getElementById('enemy3-health-value').value = enemy3.HP;
+        
+        if (noOfEnemies > 3)
+        {
+          if (enemy4.HP <= 0)
+          {
+            enemy4.HP = 0;
+            splcCheck(enemy4);
+            let buttonPass = document.getElementById(button4);
+            btnRemoval('btn4');
+          }
+          document.getElementById('enemy4-health-value').value = enemy4.HP;
+        }
+      }
+    }      
 
-  if (heroParty.priest.HP <= 0) {
-    heroParty.priest.HP = 0;
-    showHeroDeathAnimation(heroParty.priest, "priest");
-  }
+ 
+   // Check each hero's HP and display death animation if HP reaches 0
+   function handleHeroDeath(hero, gifId) {
+     if (hero.HP <= 0) {
+       hero.HP = 0;
+       const heroGif = document.getElementById(gifId);
+       heroGif.style.transition = 'opacity 4s ease-out'; // Apply ease-out transition
+       heroGif.style.opacity = '0'; // Start fading out
+       setTimeout(() => {
+         heroGif.style.display = 'none'; // Hide the GIF after fade-out
+       }, 2000); // Duration of fade-out animation (milliseconds)
+     }
+   }
+ 
+   handleHeroDeath(heroParty.hero, 'hero1-gif');
+   handleHeroDeath(heroParty.priest, 'hero2-gif');
+   handleHeroDeath(heroParty.mage, 'hero3-gif');
 
-  // Check each enemy's HP and display death animation if HP reaches 0
-  if (enemy1.HP <= 0) {
-    enemy1.HP = 0;
-    splcCheck(enemy1);
-    btnRemoval('btn1');
-    showEnemyDeathAnimation(enemy1);
-    document.getElementById('enemy1Gif').style.display = 'none';
-  }
-  document.getElementById('enemy1-health-value').value = enemy1.HP;
+   // Check each enemy's HP and display death animation if HP reaches 0
+   function handleEnemyDeath(enemy, gifId) {
+     if (enemy.HP <= 0) {
+       enemy.HP = 0;
+       const enemyGif = document.getElementById(gifId);
+       enemyGif.style.transition = 'opacity 4s ease-out'; // Apply ease-out transition
+       enemyGif.style.opacity = '0'; // Start fading out
+       setTimeout(() => {
+         enemyGif.style.display = 'none'; // Hide the GIF after fade-out
+       }, 2000); // Duration of fade-out animation (milliseconds)
+     }
+   }
+ 
+   handleEnemyDeath(enemy1, 'enemy1Gif');
+   handleEnemyDeath(enemy2, 'enemy2Gif');
+   handleEnemyDeath(enemy3, 'enemy3Gif');
 
-  if (enemy2.HP <= 0) {
-    enemy2.HP = 0;
-    splcCheck(enemy2);
-    btnRemoval('btn2');
-    showEnemyDeathAnimation(enemy2);
-    document.getElementById('enemy2Gif').style.display = 'none';
-  }
-  document.getElementById('enemy2-health-value').value = enemy2.HP;
-
-  if (enemy3.HP <= 0) {
-    enemy3.HP = 0;
-    splcCheck(enemy3);
-    btnRemoval('btn3');
-    showEnemyDeathAnimation(enemy3);
-    document.getElementById('enemy3Gif').style.display = 'none';
-  }
-  document.getElementById('enemy3-health-value').value = enemy3.HP;
-
+   
   if (noOfEnemies > 3) {
-    if (enemy4.HP <= 0) {
-      enemy4.HP = 0;
-      splcCheck(enemy4);
-      btnRemoval('btn4');
-      showEnemyDeathAnimation(enemy4);
-    }
-    document.getElementById('enemy4-health-value').value = enemy4.HP;
+    handleEnemyDeath(enemy4, 'enemy4-health-value', 'enemy4Gif', 'btn4');
     if (noOfEnemies > 4) {
-      if (enemy5.HP <= 0) {
-        enemy5.HP = 0;
-        splcCheck(enemy5);
-        btnRemoval('btn5');
-        showEnemyDeathAnimation(enemy5);
-      }
-      document.getElementById('enemy5-health-value').value = enemy5.HP;
+      handleEnemyDeath(enemy5, 'enemy5-health-value', 'enemy5Gif', 'btn5');
     }
-  }
-
-  function showHeroDeathAnimation(hero, heroType) {
-    return new Promise(resolve => {
-      const deathGifId = heroType + "-death-gif";
-      const deathGif = document.getElementById(deathGifId);
-      const backgroundOverlay = document.getElementById('background-overlay');
-  
-      // Check if the death GIF element exists and if the hero is not already dead
-      if (deathGif && !hero.isDead) {
-        // Set the position of the death GIF to the center of the viewport
-        deathGif.style.position = 'absolute';
-        deathGif.style.top = '50%';
-        deathGif.style.left = '50%';
-        deathGif.style.transform = 'translate(-50%, -50%)';
-        deathGif.style.zIndex = '1000';
-        deathGif.style.imageRendering = 'pixelated';
-  
-        // Display the background overlay
-        backgroundOverlay.style.display = 'block';
-          deathGif.style.display = 'block';
-
-          // Hide the death GIF and the background overlay after a short delay
-          setTimeout(() => {
-            deathGif.style.display = 'none';
-            backgroundOverlay.style.display = 'none';
-            resolve(); // Resolve the promise when the animation is done
-          }, 1000); // Adjust the time as needed 
-        // Set the hero as dead
-        hero.isDead = true;
-      } else {
-        resolve(); // Resolve immediately if no animation needs to be played
-      }
-    });
-  }
-  
-  function showEnemyDeathAnimation(enemy) {
-    return new Promise(resolve => {
-      const deathGifId = enemy.type + "-death-gif";
-      const deathGif = document.getElementById(deathGifId);
-      const backgroundOverlay = document.getElementById('enemyBackground-overlay');
-    
-      if (deathGif && !enemy.isDead) { // Check if the enemy is not already dead
-        // Set the position of the death GIF to the center of the screen
-        deathGif.style.position = 'absolute';
-        deathGif.style.top = '50%';
-        deathGif.style.left = '50%';
-        deathGif.style.transform = 'translate(-50%, -50%) scaleX(-1)';
-        deathGif.style.zIndex = '1000';
-        deathGif.style.imageRendering = 'pixelated'; // Add image-rendering property
-    
-          deathGif.style.display = 'block';
-          backgroundOverlay.style.display = 'block';
-          setTimeout(() => {
-            deathGif.style.display = 'none';
-            backgroundOverlay.style.display = 'none';
-            resolve(); // Resolve the promise when the animation is done
-          }, 1000); // Adjust the time as needed
-        enemy.isDead = true; // Set the enemy as dead after the death animation is played
-      } else {
-        resolve(); // Resolve immediately if no animation needs to be played
-      }
-    });
   }
 }
 
@@ -1395,7 +1340,7 @@ function checkVictory() {
 
 function handleDefeat() {
   // Remove buttons
-  let btnToRemove = ["btn1", "btn2", "btn3"];
+  let btnToRemove = ["btn1", "btn2", "btn3", "btn4", "btn5"];
   btnToRemove.forEach(function(btnId) {
     let btnRemove = document.getElementById(btnId);
     if (btnRemove) {
@@ -1415,12 +1360,12 @@ function handleDefeat() {
       setTimeout(function() {
         hideBattleElements();
         toggleOverlay();
+
+        // Enable keyboard after all actions
+        enableKeyboard();
       }, 2500); // Display the message for 2.5 seconds
     }, 500); // Delay slightly to ensure overlay is shown before displaying message
   }, 2000); // Adjust this delay as needed
-
-  // Enable keyboard after all actions
-  setTimeout(enableKeyboard, 4500); // Slightly after all actions to ensure consistency
 }
 
 if (heroParty.hero.Fainted && heroParty.mage.Fainted && heroParty.priest.Fainted) {
@@ -1448,6 +1393,36 @@ else if (enemy1.HP <= 0 && enemy2.HP <= 0 && enemy3.HP <= 0) {
       battleWon();
     }
   }
+}
+
+function partyBonusLevel()
+{
+  console.log("LEVELING UP");
+  //party members add 1 level
+  console.log(Party.hero.LVL + " before lvl up");
+  Party.hero.LVL += 1;
+  Party.mage.LVL += 1;
+  Party.priest.LVL += 1;
+
+
+  // stats scaling
+  //hp
+  Party.hero.HP += Math.ceil(Math.random() * 10) + 7;
+  Party.mage.HP += Math.ceil(Math.random() * 6) + 3;
+  Party.priest.HP += Math.ceil(Math.random() * 8) + 5;
+  
+  //atk
+  Party.hero.ATK += Math.ceil(Math.random() * 2);
+  Party.mage.ATK += Math.ceil(Math.random() * 4);
+  Party.priest.ATK += Math.ceil(Math.random() * 2);
+  //def
+  Party.hero.DEF += Math.floor(Math.random() * 4);
+  Party.mage.DEF += Math.floor(Math.random() * 2);
+  Party.priest.DEF += Math.floor(Math.random() * 3);
+  //mdef
+  Party.hero.MDEF += Math.floor(Math.random() * 2);
+  Party.mage.MDEF += Math.floor(Math.random() * 5);
+  Party.priest.MDEF += Math.floor(Math.random() * 4);
 }
 
 function partyLVLUP()
@@ -1658,12 +1633,12 @@ function atkEnemy(enemyNumber) {
 
 let enemyAttackInProgress = false;
 
+// Play enemy attack animation
 function playEnemyAttackAnimation(enemyType) {
   return new Promise(resolve => {
     const enemyGifElement = document.getElementById(enemyType + '-attack-gif');
     const backgroundOverlay = document.getElementById('enemyBackground-overlay');
 
-    // Set the position of the attack GIF to the center of the screen
     enemyGifElement.style.position = 'absolute';
     enemyGifElement.style.top = '50%';
     enemyGifElement.style.left = '50%';
@@ -1671,46 +1646,43 @@ function playEnemyAttackAnimation(enemyType) {
     enemyGifElement.style.zIndex = '1000';
 
     backgroundOverlay.style.display = 'block';
-    enemyGifElement.style.display = 'block'; // Show the attack GIF
+    enemyGifElement.style.display = 'block';
 
     setTimeout(() => {
-      enemyGifElement.style.display = 'none'; // Hide the attack GIF after a short delay
+      enemyGifElement.style.display = 'none';
       backgroundOverlay.style.display = 'none';
-      enemyAttackInProgress = false; // Reset the flag after the animation is done
-      resolve(); // Resolve the promise when the animation is done
-    }, 1000); // Adjust the delay as needed
+      enemyAttackInProgress = false;
+      resolve();
+    }, 1000);
   });
 }
 
+// Enemy attack function
 async function enemyAttack(Attacker) {
-  // Check if an enemy attack animation is already in progress
   if (enemyAttackInProgress) {
-    // If an animation is in progress, wait for it to finish before starting a new one
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
 
-  // Set the flag to indicate that an enemy attack animation is now in progress
   enemyAttackInProgress = true;
 
   console.log(turnOrder[0].name);
   let atked = Math.floor(Math.random() * aliveHeroes.length);
   console.log("Index of attacked: " + atked);
-  switch(atked) {
+  switch (atked) {
     case 0:
-      atkHeroParty(Attacker, aliveHeroes[0]);
+      await atkHeroParty(Attacker, aliveHeroes[0]);
       break;
     case 1:
-      atkHeroParty(Attacker, aliveHeroes[1]);
+      await atkHeroParty(Attacker, aliveHeroes[1]);
       break;
     case 2:
-      atkHeroParty(Attacker, aliveHeroes[2]);
+      await atkHeroParty(Attacker, aliveHeroes[2]);
       break;
     case 3:
-      atkHeroParty(Attacker, aliveHeroes[3]);
+      await atkHeroParty(Attacker, aliveHeroes[3]);
       break;
   }
 
-  // Play enemy attack animation and resolve the promise after animation
   await playEnemyAttackAnimation(Attacker.type);
 }
 
