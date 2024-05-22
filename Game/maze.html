@@ -152,6 +152,7 @@
 	  <img id="orc-attack-gif" class="enemy-attack-gif" src="orc-attack.gif" style="display: none;">
 	  <img id="skyTengu-attack-gif" class="enemy-attack-gif" src="skyTengu-attack.gif" style="display: none;">
 	  <img id="werewolf-attack-gif" class="enemy-attack-gif" src="werewolf-attack.gif" style="display: none;">
+	  <img id="moonLord-attack-gif" class="enemy-attack-gif" src="moonLord-attack.gif" style="display: none;">
 	  <!-- Enemy Attack GIF End -->
 
 	  <!-- Enemy Death GIF -->
@@ -166,10 +167,7 @@
 	  <!-- Enemy Death GIF End -->
 
 	  <!-- Boss GIF -->
-	  <div id="bossPhase1" class="enemyBox">
-		<img class="" src="bossphase1.gif" style="display: none">
-	  </div>
-	  <img src="Moon_Lord.gif" style="display: none;" id="bossPhase2">
+	  <img src="moonLord.gif" style="display: none;" id="bossPhase2">
 	  <img src="oeneri_phase3.gif" style="display: none;" id="bossPhase3">
 	  <!-- Boss GIF End -->
 
@@ -180,7 +178,7 @@
 	<script src="script.js"></script>
 	<script>
 
-	let Maze = new MazeBuilder(20, 20);
+	let Maze = new MazeBuilder(10, 10);
 	Maze.display("maze_container");
 
 	window.addEventListener("DOMContentLoaded", function(e) {
