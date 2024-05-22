@@ -689,13 +689,13 @@ class MazeBuilder {
   let boss = {
     Phase1:{
       name: "Oeneri",
-      LVL: 10,
-      HP: 40,
-      ATK: 20,
-      CR: 0.10,
-      DEF: 25,
-      MDEF: 15,
-      SPD: 999,
+       LVL: 10,
+        HP: 30,
+        ATK: 20,
+        CR: 0.10,
+        DEF: 25,
+        MDEF: 15,
+        SPD: 999,
       isBoss: true,
       DamageDone: 0,
       DamageTaken: 0,
@@ -707,12 +707,12 @@ class MazeBuilder {
       Body:{
         name: "Overlord of the Chaos Domain, Oeneri",
         LVL: 10,
-        HP: 40,
-        ATK: 20,
-        CR: 0.10,
-        DEF: 25,
-        MDEF: 15,
-        SPD: 999,
+          HP: 30,
+          ATK: 15,
+          CR: 0.10,
+          DEF: 20,
+          MDEF: 10,
+          SPD: 999,
         isBoss: true,
         DamageDone: 0,
         DamageTaken: 0,
@@ -723,12 +723,12 @@ class MazeBuilder {
       Arms:{
         name: "Arm of the Overlord",
         LVL: 10,
-        HP: 40,
-        ATK: 20,
-        CR: 0.10,
-        DEF: 25,
-        MDEF: 15,
-        SPD: 999,
+          HP: 20,
+          ATK: 17,
+          CR: 0.10,
+          DEF: 5,
+          MDEF: 25,
+          SPD: 999,
         isBoss: true,
         DamageDone: 0,
         DamageTaken: 0,
@@ -739,12 +739,12 @@ class MazeBuilder {
     Phase3:{
       name: "Mind of Oeneri",
         LVL: 10,
-        HP: 40,
-        ATK: 20,
-        CR: 0.10,
-        DEF: 25,
-        MDEF: 15,
-        SPD: 999,
+          HP: 40,
+          ATK: 20,
+          CR: 0.20,
+          DEF: 5,
+          MDEF: 5,
+          SPD: 999,
         isBoss: true,
         DamageDone: 0,
         DamageTaken: 0,
@@ -755,7 +755,7 @@ class MazeBuilder {
 
   //variable declarations
   var aliveHeroes, noOfEnemies, heroParty, enemy1, enemy2, enemy3, enemy4, enemy5, turnOrder = [],
-  buttonsDiv, button1, button2, button3, button4, button5, bossPhase = 0;
+  buttonsDiv, button1, button2, button3, button4, button5, bossPhase = 0, heroesInParty;
 
   function initalizeBattle(){
     document.getElementById('enemy1Gif').style.opacity = '100';
@@ -870,58 +870,74 @@ function disableDisplay(){
   //sets the enemy 4 and 5 disabled before rolling for the number of enemies
   document.getElementById('enemy4').style.display = "none";
   document.getElementById('enemy5').style.display = "none";
+  document.getElementById('mage').style.display = "none";
+  document.getElementById('priest').style.display = "none";
 }
 
 function bossSequenceDelcare(){
-    enemy1 = structuredClone(boss.Phase2.Arms);
-    enemy1.name = "Left " + enemy1.name;
-    enemy2 = structuredClone(boss.Phase2.Body);
-    enemy3 = structuredClone(boss.Phase2.Arms);
-    enemy3.name = "Right " + enemy3.name;
-    noOfEnemies = 3;
+     if (bossPhase == 1)
+    {
+      enemy1 = structuredClone(boss.Phase1);
+      noOfEnemies = 1;
+    }
+    else if (bossPhase == 2)
+    {
+      enemy1 = structuredClone(boss.Phase2.Arms);
+      enemy1.name = "Left " + enemy1.name;
+      enemy2 = structuredClone(boss.Phase2.Body);
+      enemy3 = structuredClone(boss.Phase2.Arms);
+      enemy3.name = "Right " + enemy3.name;
+      noOfEnemies = 3;
+    }
+    else if (bossPhase == 3)
+    {
+      enemy1 = structuredClone(boss.Phase3);
+      noOfEnemies = 1;
+    }
 }
 
 function enemyNoDeclaration(){
   //roll for how many enemies in the battle (Min of 3, max of 5)
   heroParty = structuredClone(Party);
-  aliveHeroes = [heroParty.hero, heroParty.mage, heroParty.priest];
-  noOfEnemies = Math.ceil(Math.random() * 3);
+  heroesInParty = [heroParty.hero, heroParty.mage, heroParty.priest];
+  aliveHeroes = heroesInParty;
   noOfEnemies = aliveHeroes.length; // number of alive heroes
+  if (heroesInParty.includes(heroParty.mage))
+  {
+      document.getElementById('mage').style.display = "block";
+  }
+  if (heroesInParty.includes(heroParty.priest))
+  {
+      document.getElementById('priest').style.display = "block";
+  }
 
   console.log("Number of enemies : " + noOfEnemies);
-  enemy1, enemy2, enemy3, enemy4, enemy5;
   enemy1 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
-  enemy2 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
-  enemy3 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
-  if (noOfEnemies > 3)
-  {
-    enemy4 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
-    if (noOfEnemies > 4)
-    {
-      enemy5 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
+    if (noOfEnemies > 1)
+    {    
+      enemy2 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
+      if (noOfEnemies > 2)
+      {    
+        enemy3 = structuredClone(enemyAssign(Math.ceil(Math.random() * 8)));
+      }
     }
-  }
 }
 
 function setTurnOrder(){
   //turn order
   //pushes the objects to the turn order array
-  turnOrder.push(heroParty.hero); 
-  turnOrder.push(heroParty.mage);
-  turnOrder.push(heroParty.priest);
-  turnOrder.push(enemy1);
-  turnOrder.push(enemy2);
-  turnOrder.push(enemy3);
-  if (noOfEnemies > 3)
-  {
-    turnOrder.push(enemy4);
-    if (noOfEnemies > 4)
+   turnOrder.push(...heroesInParty);
+    turnOrder.push(enemy1);
+    if (noOfEnemies > 1)
     {
-      turnOrder.push(enemy5);
+      turnOrder.push(enemy2);
+      if (noOfEnemies > 2)
+      {
+        turnOrder.push(enemy3);
+      }
     }
-  }
-  //sorts them according to their speed stat from Greatest to Least
-  turnOrder.sort((a, b) => b.SPD - a.SPD); 
+    //sorts them according to their speed stat from Greatest to Least
+    turnOrder.sort((a, b) => b.SPD - a.SPD); 
 }
 
 //Getting the enemy GIF's
@@ -941,34 +957,22 @@ function setEnemyNames() {
     enemy1Gif.style.display = 'block';
     enemy1Gif.src = getGifPath(enemy1.type);
     enemy1Gif.className = getClass(enemy1.type);
-    
+    if (noOfEnemies > 1)
+    {
     document.getElementById('enemy2Name').innerText = enemy2.name;
     const enemy2Gif = document.getElementById('enemy2Gif');
     enemy2Gif.style.display = 'block';
     enemy2Gif.src = getGifPath(enemy2.type);
     enemy2Gif.className = getClass(enemy2.type);
+  	if (noOfEnemies > 2)
+	{
+	    document.getElementById('enemy3Name').innerText = enemy3.name;
+	    const enemy3Gif = document.getElementById('enemy3Gif');
+	    enemy3Gif.style.display = 'block';
+	    enemy3Gif.src = getGifPath(enemy3.type);
+	    enemy3Gif.className = getClass(enemy3.type);
   
-    document.getElementById('enemy3Name').innerText = enemy3.name;
-    const enemy3Gif = document.getElementById('enemy3Gif');
-    enemy3Gif.style.display = 'block';
-    enemy3Gif.src = getGifPath(enemy3.type);
-    enemy3Gif.className = getClass(enemy3.type);
-  
-    if (noOfEnemies > 3) {
-      document.getElementById('enemy4').style.display = 'block';
-      document.getElementById('enemy4Name').innerText = enemy4.name;
-      const enemy4Gif = document.getElementById('enemy4Gif');
-      enemy4Gif.style.display = 'block';
-      enemy4Gif.src = getGifPath(enemy4.type);
-      enemy4Gif.className = getClass(enemy4.type);
-      if (noOfEnemies > 4) {
-        document.getElementById('enemy5').style.display = 'block';
-        document.getElementById('enemy5Name').innerText = enemy5.name;
-        const enemy5Gif = document.getElementById('enemy5Gif');
-        enemy5Gif.style.display = 'block';
-        enemy5Gif.src = getGifPath(enemy5.type);
-        enemy5Gif.className = getClass(enemy5.type);
-      }
+	}
     }
   }
 
@@ -982,34 +986,23 @@ function createAtkEnemyBtn(){
   button1.addEventListener("click", atkEnemy1);
   buttonsDiv.appendChild(button1);
 
+  if (noOfEnemies > 1)
+    {
   button2 = document.createElement("button");
   button2.id = "btn2";
   button2.innerHTML = "Attack " + enemy2.name;
   button2.addEventListener("click", atkEnemy2);
   buttonsDiv.appendChild(button2);
-
+      if (noOfEnemies > 2)
+      {
   button3 = document.createElement("button");
   button3.id = "btn3";
   button3.innerHTML = "Attack " + enemy3.name;
   button3.addEventListener("click", atkEnemy3);
   buttonsDiv.appendChild(button3);
-
-  if (noOfEnemies > 3)
-  {
-    button4 = document.createElement("button");
-    button4.id = "btn4";
-    button4.innerHTML = "Attack " + enemy4.name;
-    button4.addEventListener("click", atkEnemy4);
-    buttonsDiv.appendChild(button4);
-    if(noOfEnemies > 4)
-    {
-      button5 = document.createElement("button");
-      button5.id = "btn5";
-      button5.innerHTML = "Attack " + enemy5.name;
-      button5.addEventListener("click", atkEnemy5);
-      buttonsDiv.appendChild(button5);
+      }
     }
-  }
+ 
 }
 
 function HealthDisplay(){
@@ -1018,30 +1011,33 @@ function HealthDisplay(){
   document.getElementById('enemyHealthBars').style.display = 'block';
   //initializing healthbars
   document.getElementById('hero-health-value').max = Party.hero.HP;
-  document.getElementById('mage-health-value').max = Party.mage.HP;
-  document.getElementById('priest-health-value').max = Party.priest.HP;
+    document.getElementById("hero-health-value").value = heroParty.hero.HP;
 
-  document.getElementById("hero-health-value").value = heroParty.hero.HP;
-  document.getElementById("mage-health-value").value = heroParty.mage.HP;
-  document.getElementById("priest-health-value").value = heroParty.priest.HP;
-
-  document.getElementById('enemy1-health-value').max = enemy1.HP;
-  document.getElementById('enemy2-health-value').max = enemy2.HP;
-  document.getElementById('enemy3-health-value').max = enemy3.HP;
-
-  document.getElementById('enemy1-health-value').value = enemy1.HP;
-  document.getElementById('enemy2-health-value').value = enemy2.HP;
-  document.getElementById('enemy3-health-value').value = enemy3.HP;
-  if (noOfEnemies > 3)
-  {
-    document.getElementById('enemy4-health-value').max = enemy4.HP;
-    document.getElementById('enemy4-health-value').value = enemy4.HP;
-    if (noOfEnemies > 4)
+    if (heroesInParty.includes(heroParty.mage))
     {
-      document.getElementById('enemy5-health-value').max = enemy5.HP;
-      document.getElementById('enemy5-health-value').value = enemy5.HP;
+      document.getElementById('mage-health-value').max = Party.mage.HP;
+      document.getElementById("mage-health-value").value = heroParty.mage.HP;
     }
-  }
+
+    if (heroesInParty.includes(heroParty.priest))
+    {
+      document.getElementById('priest-health-value').max = Party.priest.HP;
+      document.getElementById("priest-health-value").value = heroParty.priest.HP;
+    }
+
+    document.getElementById('enemy1-health-value').max = enemy1.HP;
+    document.getElementById('enemy1-health-value').value = enemy1.HP;
+    if (noOfEnemies > 1)
+    {
+      document.getElementById('enemy2-health-value').max = enemy2.HP;
+      document.getElementById('enemy2-health-value').value = enemy2.HP;
+      if(noOfEnemies > 2)
+      {
+        document.getElementById('enemy3-health-value').max = enemy3.HP;
+        document.getElementById('enemy3-health-value').value = enemy3.HP;
+      }
+    }
+
 }
 
 function heroGIF(){
@@ -1148,19 +1144,9 @@ function updateHealthBars() {
         }
         document.getElementById('enemy3-health-value').value = enemy3.HP;
         
-        if (noOfEnemies > 3)
-        {
-          if (enemy4.HP <= 0)
-          {
-            enemy4.HP = 0;
-            splcCheck(enemy4);
-            let buttonPass = document.getElementById(button4);
-            btnRemoval('btn4');
-          }
-          document.getElementById('enemy4-health-value').value = enemy4.HP;
-        }
       }
     }      
+}
 
  
    // Check each hero's HP and display death animation if HP reaches 0
@@ -1270,6 +1256,8 @@ function displayLevelUpMessage() {
 let victoryAchieved = false; // Add this variable to track victory status
 
 function checkVictory() {
+  var btlLost = false; //new variable so that if hero dies, enemy fainted checks will still happen
+    //if all heroes didnt faint
   if (heroParty.hero.HP <= 0) {
     heroParty.hero.Fainted = true;
     splcCheck(heroParty.hero);
@@ -1368,31 +1356,69 @@ function handleDefeat() {
   }, 2000); // Adjust this delay as needed
 }
 
-if (heroParty.hero.Fainted && heroParty.mage.Fainted && heroParty.priest.Fainted) {
-  handleDefeat();
-}
-else if (enemy1.HP <= 0 && enemy2.HP <= 0 && enemy3.HP <= 0) {
-    //checks if enemy 1, 2, 3 are dead
-    if (noOfEnemies > 3) {
-      //checks if theres 4 or 5 enemies
-      if (enemy4.HP <= 0) {
-        //checks if enemy 4 is dead
-        if (noOfEnemies > 4) {
-          // checks if theres 5 enemies
-          if (enemy5.HP <= 0) {
-            //checks if enemy 5 is dead
-            battleWon();
+if (heroParty.hero.Fainted) 
+{ //checks if all heroes are dead
+      if (heroesInParty.includes(heroParty.mage))
+      {
+        if (heroParty.mage.Fainted)
+        {
+          if (heroesInParty.includes(heroParty.priest))
+          {
+            if (heroParty.priest.Fainted)
+            {
+		  handleDefeat();
+	    }
+	  }
+         
+         else
+         {
+	   handleDefeat();
+	 }
+	}
+      }
+      else
+      {
+        if (heroesInParty.includes(heroParty.priest))
+        {
+          if (heroParty.priest.Fainted)
+          {
+		  handleDefeat();
+	  }
+        }
+        else
+        {
+          handleDefeat(); // hero
+        }
+      }
+    } 
+	  
+if (!btlLost)
+    {
+      if (enemy1.HP <= 0) //checks if enemy 1, 2, 3 are dead
+      {
+        if(noOfEnemies > 1)
+        {
+          if (enemy2.HP <= 0)
+          {
+            if (noOfEnemies > 2)
+            {
+              if (enemy3.HP <= 0)
+              {
+                battleWon();
+              }
+            }
+            else
+            {
+              battleWon();
+            }
           }
-        } else {
-          //only 4 enemies and all enemies are dead
+        }
+        else 
+        {
           battleWon();
         }
       }
-    } else {
-      //only 3 enemies and all are dead
-      battleWon();
     }
-  }
 }
 
 function partyBonusLevel()
